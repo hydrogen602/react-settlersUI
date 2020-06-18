@@ -1,0 +1,183 @@
+2020-06-18 17:49:37,770 Server starting up
+
+2020-06-18 17:49:37,770 Server on: localhost:8080
+2020-06-18 17:49:42,461 New request from 127.0.0.1
+2020-06-18 17:49:42,463 ('127.0.0.1', 63751)
+2020-06-18 17:49:42,464 GET / HTTP/1.1
+2020-06-18 17:49:42,464 Serving: /index.html
+2020-06-18 17:49:42,466 
+2020-06-18 17:49:42,625 New request from 127.0.0.1
+2020-06-18 17:49:42,626 ('127.0.0.1', 63753)
+2020-06-18 17:49:42,626 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-06-18 17:49:42,626 Serving: /node_modules/react/umd/react.development.js
+2020-06-18 17:49:42,640 
+2020-06-18 17:49:42,641 New request from 127.0.0.1
+2020-06-18 17:49:42,642 ('127.0.0.1', 63755)
+2020-06-18 17:49:42,642 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-06-18 17:49:42,643 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-06-18 17:49:43,000 
+2020-06-18 17:49:43,002 New request from 127.0.0.1
+2020-06-18 17:49:43,003 ('127.0.0.1', 63757)
+2020-06-18 17:49:43,003 GET /dist/main.js HTTP/1.1
+2020-06-18 17:49:43,004 Serving: /dist/main.js
+2020-06-18 17:49:43,007 
+2020-06-18 18:15:05,749 New request from 127.0.0.1
+2020-06-18 18:15:05,778 ('127.0.0.1', 63922)
+2020-06-18 18:15:05,779 GET / HTTP/1.1
+2020-06-18 18:15:05,779 Serving: /index.html
+2020-06-18 18:15:05,784 
+2020-06-18 18:15:05,949 New request from 127.0.0.1
+2020-06-18 18:15:05,951 ('127.0.0.1', 63924)
+2020-06-18 18:15:05,952 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-06-18 18:15:05,953 Serving: /node_modules/react/umd/react.development.js
+2020-06-18 18:15:05,961 
+2020-06-18 18:15:05,962 New request from 127.0.0.1
+2020-06-18 18:15:05,962 ('127.0.0.1', 63926)
+2020-06-18 18:15:05,963 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-06-18 18:15:05,963 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-06-18 18:15:05,980 
+2020-06-18 18:15:05,982 New request from 127.0.0.1
+2020-06-18 18:15:05,988 ('127.0.0.1', 63928)
+2020-06-18 18:15:05,989 GET /dist/main.js HTTP/1.1
+2020-06-18 18:15:05,989 Serving: /dist/main.js
+2020-06-18 18:15:05,992 
+2020-06-18 18:40:37,758 New request from 127.0.0.1
+2020-06-18 18:40:37,774 ('127.0.0.1', 63987)
+2020-06-18 18:40:37,778 GET / HTTP/1.1
+2020-06-18 18:40:37,778 Serving: /index.html
+2020-06-18 18:40:37,791 
+2020-06-18 18:40:37,993 New request from 127.0.0.1
+2020-06-18 18:40:37,995 ('127.0.0.1', 63989)
+2020-06-18 18:40:37,995 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-06-18 18:40:37,995 Serving: /node_modules/react/umd/react.development.js
+2020-06-18 18:40:38,000 
+2020-06-18 18:40:38,003 New request from 127.0.0.1
+2020-06-18 18:40:38,004 ('127.0.0.1', 63991)
+2020-06-18 18:40:38,005 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-06-18 18:40:38,005 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-06-18 18:40:38,060 
+2020-06-18 18:40:38,061 New request from 127.0.0.1
+2020-06-18 18:40:38,061 ('127.0.0.1', 63993)
+2020-06-18 18:40:38,061 GET /dist/main.js HTTP/1.1
+2020-06-18 18:40:38,061 Serving: /dist/main.js
+2020-06-18 18:40:38,063 
+2020-06-18 18:40:54,144 New request from 127.0.0.1
+2020-06-18 18:40:54,145 ('127.0.0.1', 63995)
+2020-06-18 18:40:54,145 GET / HTTP/1.1
+2020-06-18 18:40:54,145 Serving: /index.html
+2020-06-18 18:40:54,147 
+2020-06-18 18:40:54,215 New request from 127.0.0.1
+2020-06-18 18:40:54,218 ('127.0.0.1', 63997)
+2020-06-18 18:40:54,218 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-06-18 18:40:54,218 Serving: /node_modules/react/umd/react.development.js
+2020-06-18 18:40:54,220 
+2020-06-18 18:40:54,221 New request from 127.0.0.1
+2020-06-18 18:40:54,221 ('127.0.0.1', 63999)
+2020-06-18 18:40:54,222 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-06-18 18:40:54,222 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-06-18 18:40:54,263 
+2020-06-18 18:40:54,264 New request from 127.0.0.1
+2020-06-18 18:40:54,265 ('127.0.0.1', 64001)
+2020-06-18 18:40:54,265 GET /dist/main.js HTTP/1.1
+2020-06-18 18:40:54,265 Serving: /dist/main.js
+2020-06-18 18:40:54,266 
+2020-06-18 18:41:21,785 New request from 127.0.0.1
+2020-06-18 18:41:21,796 ('127.0.0.1', 64006)
+2020-06-18 18:41:21,796 GET / HTTP/1.1
+2020-06-18 18:41:21,797 Serving: /index.html
+2020-06-18 18:41:21,805 
+2020-06-18 18:41:21,884 New request from 127.0.0.1
+2020-06-18 18:41:21,887 ('127.0.0.1', 64008)
+2020-06-18 18:41:21,887 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-06-18 18:41:21,887 Serving: /node_modules/react/umd/react.development.js
+2020-06-18 18:41:21,897 
+2020-06-18 18:41:21,898 New request from 127.0.0.1
+2020-06-18 18:41:21,899 ('127.0.0.1', 64010)
+2020-06-18 18:41:21,900 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-06-18 18:41:21,900 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-06-18 18:41:21,911 
+2020-06-18 18:41:21,912 New request from 127.0.0.1
+2020-06-18 18:41:21,912 ('127.0.0.1', 64012)
+2020-06-18 18:41:21,913 GET /dist/main.js HTTP/1.1
+2020-06-18 18:41:21,913 Serving: /dist/main.js
+2020-06-18 18:41:21,914 
+2020-06-18 18:41:26,523 New request from 127.0.0.1
+2020-06-18 18:41:26,524 ('127.0.0.1', 64018)
+2020-06-18 18:41:26,524 GET /dist/main.js.map HTTP/1.1
+2020-06-18 18:41:26,524 Serving: /dist/main.js.map
+2020-06-18 18:41:26,525 
+2020-06-18 18:41:43,877 New request from 127.0.0.1
+2020-06-18 18:41:43,878 ('127.0.0.1', 64088)
+2020-06-18 18:41:43,878 GET / HTTP/1.1
+2020-06-18 18:41:43,878 Serving: /index.html
+2020-06-18 18:41:43,880 
+2020-06-18 18:41:43,973 New request from 127.0.0.1
+2020-06-18 18:41:43,974 ('127.0.0.1', 64090)
+2020-06-18 18:41:43,974 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-06-18 18:41:43,974 Serving: /node_modules/react/umd/react.development.js
+2020-06-18 18:41:43,977 
+2020-06-18 18:41:43,978 New request from 127.0.0.1
+2020-06-18 18:41:43,979 ('127.0.0.1', 64093)
+2020-06-18 18:41:43,979 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-06-18 18:41:43,980 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-06-18 18:41:43,995 
+2020-06-18 18:41:43,996 New request from 127.0.0.1
+2020-06-18 18:41:43,997 ('127.0.0.1', 64094)
+2020-06-18 18:41:43,997 GET /dist/main.js HTTP/1.1
+2020-06-18 18:41:43,997 Serving: /dist/main.js
+2020-06-18 18:41:43,999 
+2020-06-18 18:41:44,261 New request from 127.0.0.1
+2020-06-18 18:41:44,262 ('127.0.0.1', 64096)
+2020-06-18 18:41:44,262 GET /dist/main.js.map HTTP/1.1
+2020-06-18 18:41:44,262 Serving: /dist/main.js.map
+2020-06-18 18:41:44,263 
+2020-06-18 18:48:01,889 New request from 127.0.0.1
+2020-06-18 18:48:01,894 ('127.0.0.1', 49237)
+2020-06-18 18:48:01,895 GET / HTTP/1.1
+2020-06-18 18:48:01,896 Serving: /index.html
+2020-06-18 18:48:01,898 
+2020-06-18 18:48:01,998 New request from 127.0.0.1
+2020-06-18 18:48:01,999 ('127.0.0.1', 49239)
+2020-06-18 18:48:02,000 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-06-18 18:48:02,000 Serving: /node_modules/react/umd/react.development.js
+2020-06-18 18:48:02,003 
+2020-06-18 18:48:02,004 New request from 127.0.0.1
+2020-06-18 18:48:02,005 ('127.0.0.1', 49241)
+2020-06-18 18:48:02,005 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-06-18 18:48:02,005 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-06-18 18:48:02,018 
+2020-06-18 18:48:02,020 New request from 127.0.0.1
+2020-06-18 18:48:02,020 ('127.0.0.1', 49243)
+2020-06-18 18:48:02,021 GET /dist/index.js HTTP/1.1
+2020-06-18 18:48:02,021 Serving: /dist/index.js
+2020-06-18 18:48:02,022 
+2020-06-18 18:48:02,112 New request from 127.0.0.1
+2020-06-18 18:48:02,113 ('127.0.0.1', 49245)
+2020-06-18 18:48:02,113 GET /dist/index.js.map HTTP/1.1
+2020-06-18 18:48:02,113 Serving: /dist/index.js.map
+2020-06-18 18:48:02,114 
+2020-06-18 18:48:22,571 New request from 127.0.0.1
+2020-06-18 18:48:22,573 ('127.0.0.1', 49328)
+2020-06-18 18:48:22,576 GET / HTTP/1.1
+2020-06-18 18:48:22,576 Serving: /index.html
+2020-06-18 18:48:22,577 
+2020-06-18 18:48:22,668 New request from 127.0.0.1
+2020-06-18 18:48:22,669 ('127.0.0.1', 49330)
+2020-06-18 18:48:22,669 GET /node_modules/react/umd/react.development.js HTTP/1.1
+2020-06-18 18:48:22,669 Serving: /node_modules/react/umd/react.development.js
+2020-06-18 18:48:22,672 
+2020-06-18 18:48:22,673 New request from 127.0.0.1
+2020-06-18 18:48:22,673 ('127.0.0.1', 49332)
+2020-06-18 18:48:22,673 GET /node_modules/react-dom/umd/react-dom.development.js HTTP/1.1
+2020-06-18 18:48:22,673 Serving: /node_modules/react-dom/umd/react-dom.development.js
+2020-06-18 18:48:22,698 
+2020-06-18 18:48:22,700 New request from 127.0.0.1
+2020-06-18 18:48:22,700 ('127.0.0.1', 49334)
+2020-06-18 18:48:22,701 GET /dist/main.js HTTP/1.1
+2020-06-18 18:48:22,701 Serving: /dist/main.js
+2020-06-18 18:48:22,702 
+2020-06-18 18:48:22,822 New request from 127.0.0.1
+2020-06-18 18:48:22,823 ('127.0.0.1', 49340)
+2020-06-18 18:48:22,824 GET /dist/main.js.map HTTP/1.1
+2020-06-18 18:48:22,824 Serving: /dist/main.js.map
+2020-06-18 18:48:22,827 
