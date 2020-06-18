@@ -1,3 +1,4 @@
+var path = require('path');
 module.exports = {
     mode: "production",
 
@@ -6,7 +7,10 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx"]
+        extensions: [".ts", ".tsx", ".css"],
+        modules: [
+            'node_modules'
+        ]
     },
 
     module: {
@@ -25,6 +29,18 @@ module.exports = {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: "source-map-loader"
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'css-modules-typescript-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true
+                        }
+                    }
+                ]
             }
         ]
     },
