@@ -49,7 +49,7 @@ export class LoginForm extends React.Component<IProp, IState> {
 
     render() {
         return (
-            <form id="loginForm" className="center" onSubmit={this.handleSubmit}>
+            <form id="loginForm" className="center window" onSubmit={this.handleSubmit}>
                 <input required name="name" type="text" placeholder="Name" value={this.state.name} onChange={this.handleChange}></input>
                 <input required name="host" type="text" placeholder="Hostname" value={this.state.host} onChange={this.handleChange}></input>
                 <input required name="port" type="number" placeholder="Port" value={this.state.port} onChange={this.handleChange}></input>

@@ -7,6 +7,8 @@ body {
     height: 100%;
 }
 
+/* ================= Generic ================= */
+
 .center {
     margin: 0;
     position: absolute;
@@ -16,12 +18,18 @@ body {
     transform: translate(-50%, -50%);
 }
 
-#loginForm {
-    border: 0.1px solid black;
+.window {
+    /*border: 0.1px solid black;*/
     border-radius: 1em;
-    width: 14em;
     padding: 1em;
-    background-color: #AEB6BF;
+    background-color: #1B4F72;/*#AEB6BF;*/
+    z-index: 1;
+}
+
+/* ================= Login Form ================= */
+
+#loginForm {
+    width: 14em;
 }
 
 #loginForm input {
@@ -39,7 +47,40 @@ body {
     /*margin: 0.4em;*/
     margin: 1em auto;
     display: block;
-    background-color: #F1C40F;
+    background-color: #F39C12;
     padding: 0.5em;
     width: 60%;
+}
+
+/* ================= Spinner ================= */
+
+/* from https://www.w3schools.com/howto/howto_css_loader.asp */
+.loader {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #F1C40F; /* Blue */
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 2s linear infinite;
+    z-index: 2;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ================= Notification Systems ================= */
+
+.notificationBanner {
+    float: right;
+    margin: 1em;
+    min-width: 10em;
+    border-radius: 0.5em !important;
+}
+
+#whoopsie {
+    float: right;
+    max-width: 50%;
 }
