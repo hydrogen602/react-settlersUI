@@ -14,6 +14,8 @@ export class Connection {
     private onWebSockFailure: (ev: Event) => void;
     private onWebSockOpen: (ev: Event) => void;
 
+    private connectedOnce: boolean;
+
     constructor(host: string, port: number, name: string, onWebSockFailure: (ev: Event) => void, onWebSockOpen: (ev: Event) => void) {
 
         this.host = encodeURIComponent(host);
@@ -25,6 +27,9 @@ export class Connection {
         
         this.onWebSockFailure = onWebSockFailure;
         this.onWebSockOpen = onWebSockOpen;
+
+        this.connectedOnce = false;
+        this.failedAttempts = 0;
         
         this.connect();
     }
@@ -49,11 +54,24 @@ export class Connection {
 
     private onclose(ev: CloseEvent) {
         console.log("WS closed", ev);
+        if (this.connectedOnce) {
+            if (this.failedAttempts > 5) {
+                return;
+            }
+
+            setTimeout(function() {
+                //newNotification('Reconnecting...');
+                this.connect();
+            }, 3000);
+        }
     }
 
     private onerror(ev: Event) {
         console.log("WS errored", ev);
-        this.onWebSockFailure(ev);
+        this.failedAttempts += 1
+        if (!this.connectedOnce) {
+            this.onWebSockFailure(ev);
+        }
     }
 
     private onmessage(ev: MessageEvent) {
@@ -63,5 +81,10 @@ export class Connection {
     private onopen(ev: Event) {
         console.log("WS opened", ev);
         this.onWebSockOpen(ev);
+        this.connectedOnce = true;
+    }
+
+    public setOnMessage(f:(ev: MessageEvent) => void) {
+        this.onmessage = f;
     }
 }

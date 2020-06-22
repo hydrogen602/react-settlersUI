@@ -4,6 +4,7 @@ import { LoginForm } from "./login";
 import { Spinner } from "./spinner";
 
 import { Connection } from "../connection";
+import { Game } from "./game";
 
 const atLogin = 0
 const atConnecting = 1
@@ -86,6 +87,11 @@ export class UI extends React.Component<{}, IState> {
                     <Spinner shown={true}/>
                 </div>
                 );
+        }
+        else if (this.state.progressState == atGame) {
+            return (
+                <Game conn={this.state.conn}/>
+            )
         }
         else {
             return <p>Hi, {this.state.name}</p>
