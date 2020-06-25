@@ -1,15 +1,20 @@
 import * as React from "react";
+import { GameMap } from "./canvasCode/map/GameMap";
+
+interface IProps {
+    gm: GameMap
+}
 
 interface IState {
     x: number,
-    y: number
+    y: number,
 }
 
-export class Canvas extends React.Component<{}, IState> {
+export class Canvas extends React.Component<IProps, IState> {
 
-    private canvasRef: React.MutableRefObject<HTMLCanvasElement>; // type ?
+    private canvasRef: React.MutableRefObject<HTMLCanvasElement>;
 
-    constructor(props: {}) {
+    constructor(props: IProps) {
         super(props);
         this.canvasRef = React.createRef();
 
@@ -30,7 +35,11 @@ export class Canvas extends React.Component<{}, IState> {
         const canvas = this.canvasRef.current;
         const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
         // implement draw on ctx here
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        ctx.fillStyle = '#8395c1'; // background color is set here!
+        ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+        this.props.gm.draw(ctx);
 
         ctx.beginPath();
         ctx.arc(this.state.x, this.state.y, 10, 0, 6.28);

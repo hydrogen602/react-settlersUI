@@ -25,7 +25,7 @@ export class JsonParser {
             throw new JsonParserError("Json field '__name__' is of the wrong type: got '" + typeof(value) + "' but expected 'string'");
         }
         
-        return value
+        return value;
     }
 
     static requireName(o: any, nameRequired: string) {
@@ -50,7 +50,7 @@ export class JsonParser {
         if (typeof(value) != 'number') {
             throw new JsonParserError("Json field '" + name + "' is of the wrong type: got '" + typeof(value) + "' but expected 'number'");
         }
-        return value
+        return value;
     }
     
     static requireString(o: any, name: string): string {
@@ -61,7 +61,7 @@ export class JsonParser {
         if (typeof(value) != 'string') {
             throw new JsonParserError("Json field '" + name + "' is of the wrong type: got '" + typeof(value) + "' but expected 'string'");
         }
-        return value
+        return value;
     }
 
     static requireObject(o: any, name: string): object {
@@ -72,7 +72,7 @@ export class JsonParser {
         if (typeof(value) != 'object') {
             throw new JsonParserError("Json field '" + name + "' is of the wrong type: got '" + typeof(value) + "' but expected 'object'");
         }
-        return value
+        return value;
     }
 
     static requireArray(o: any, name: string): Array<any> {
@@ -83,7 +83,18 @@ export class JsonParser {
         if (typeof(value) != 'object' || value.__proto__.constructor.name != 'Array') {
             throw new JsonParserError("Json field '" + name + "' is of the wrong type: got '" + typeof(value) + "' but expected 'Array'");
         }
-        return value
+        return value;
+    }
+
+    static requireBool(o: any, name: string): boolean {
+        if (!(name in o)) {
+            throw new JsonParserError("Missing json field: '" + name + "'");
+        }
+        const value: any = o[name];
+        if (typeof(value) != 'boolean') {
+            throw new JsonParserError("Json field '" + name + "' is of the wrong type: got '" + typeof(value) + "' but expected 'boolean'");
+        }
+        return value;
     }
 
 }
