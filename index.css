@@ -84,3 +84,39 @@ body {
     float: right;
     max-width: 50%;
 }
+
+.statusBar {
+    position: relative;
+    float: top;
+    width: 80%;
+    margin: auto;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+
+    color: white;
+}
+
+.playerList {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    position: relative;
+    margin: auto;
+    float: right;
+
+    color: white;
+}
+
+.playerList p {
+    padding-left: 0.5em;
+}
+
+
+
+canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+}
+
+

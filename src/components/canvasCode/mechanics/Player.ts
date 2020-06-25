@@ -29,6 +29,13 @@ export class Player {
         Player.playerDict[token] = this;
     }
 
+    static doesPlayerExists(data: object): boolean {
+        JsonParser.requireName(data, 'Player');
+        const token = JsonParser.requireString(data, 'token');
+
+        return token in Player.playerDict;
+    }
+
     static fromJson(data: object): Player {
         JsonParser.requireName(data, 'Player');
         const token = JsonParser.requireString(data, 'token');
@@ -43,6 +50,10 @@ export class Player {
             JsonParser.requireString(data, 'name'),
             token
         )
+    }
+
+    static getPlayerDict() {
+        return Player.playerDict;
     }
 
     // getRoads() {

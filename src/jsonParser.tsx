@@ -28,6 +28,18 @@ export class JsonParser {
         return value;
     }
 
+    static askType(o: any): string {
+        if (!('type' in o)) {
+            return '';
+        }
+        const value: any = o['type'];
+        if (typeof(value) != 'string') {
+            throw new JsonParserError("Json field 'type' is of the wrong type: got '" + typeof(value) + "' but expected 'string'");
+        }
+        
+        return value;
+    }
+
     static requireName(o: any, nameRequired: string) {
         if (!('__name__' in o)) {
             throw new JsonParserError("Missing json field: '" + name + "'");
