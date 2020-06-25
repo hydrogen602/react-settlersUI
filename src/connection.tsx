@@ -1,3 +1,5 @@
+import { JsonParser } from "./jsonParser";
+
 
 export class Connection {
 
@@ -13,6 +15,8 @@ export class Connection {
 
     private onWebSockFailure: (ev: Event) => void;
     private onWebSockOpen: (ev: Event) => void;
+
+    private jsonMessageHandler: (obj: object) => void;
 
     private connectedOnce: boolean;
 
@@ -75,16 +79,74 @@ export class Connection {
     }
 
     private onmessage(ev: MessageEvent) {
-        console.log("WS message", ev);
+        if (ev.data == "Hello") {
+            console.log("Successful Echo, Server is alive!");
+        }
+        else {
+            try {
+                const obj = JSON.parse(ev.data);
+
+                console.log("got msg:", obj);
+
+                if ('token' in obj) {
+                    const token: string = JsonParser.requireString(obj, 'token');
+                    if (!this.token) {
+                        // remember the token
+                        console.log('Got token', token)
+                        this.token = token;
+                    }
+                    return;
+                }
+
+                this.jsonMessageHandler(obj);
+
+            } catch (e) {
+                if (e.name == 'SyntaxError') {
+                    console.log('Got invalid JSON')
+                }
+                else {
+                    console.log('Error:', e)
+                    console.log('Error data:', e.data)
+                }
+            }
+        }
     }
 
     private onopen(ev: Event) {
         console.log("WS opened", ev);
+        this.failedAttempts = 0;
         this.onWebSockOpen(ev);
         this.connectedOnce = true;
+
+        this.ws.send('Hi');
+        this.ws.send('history');
     }
 
-    public setOnMessage(f:(ev: MessageEvent) => void) {
-        this.onmessage = f;
+    public setJsonMessageHandler(f:(ev: MessageEvent) => void) {
+        this.jsonMessageHandler = f;
+    }
+
+        /**
+     * The function handles the JSON.stringify
+     * 
+     * @param o An object to send.
+     */
+    public send(o: object) {
+        const msg = JSON.stringify(o);
+        if (this.ws) {
+            this.ws.send(msg);
+        }
+        else {
+            console.log('Disconnected');
+        }
+    }
+
+    public getHistory() {
+        if (this.ws) {
+            this.ws.send('history');
+        }
+        else {
+            console.log('Disconnected');
+        }
     }
 }

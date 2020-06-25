@@ -14,15 +14,15 @@ export class Game extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-        props.conn.setOnMessage(this.onMessage.bind(this));
+        props.conn.setJsonMessageHandler(this.onMessage.bind(this));
 
         this.state = {
 
         }
     }
 
-    private onMessage(ev: MessageEvent) {
-        console.log(ev.data);
+    private onMessage(obj: object) {
+        //console.log(obj);
     }
 
     render() {

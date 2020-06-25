@@ -7,7 +7,7 @@ interface IState {
 
 export class Canvas extends React.Component<{}, IState> {
 
-    private canvasRef: React.MutableRefObject<any>; // type ?
+    private canvasRef: React.MutableRefObject<HTMLCanvasElement>; // type ?
 
     constructor(props: {}) {
         super(props);
@@ -20,6 +20,8 @@ export class Canvas extends React.Component<{}, IState> {
     }
 
     componentDidMount() {
+        const canvas = this.canvasRef.current;
+        this.makeHiDPICanvas(canvas);
         this.componentDidUpdate();
     }
     
@@ -28,7 +30,7 @@ export class Canvas extends React.Component<{}, IState> {
         const canvas = this.canvasRef.current;
         const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
         // implement draw on ctx here
-        ctx.clearRect(0, 0, window.innerHeight, window.innerWidth);
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
         ctx.beginPath();
         ctx.arc(this.state.x, this.state.y, 10, 0, 6.28);
@@ -55,5 +57,30 @@ export class Canvas extends React.Component<{}, IState> {
                 onClick={this.onClick.bind(this)}
             />
         )
+    }
+
+    private makeHiDPICanvas(canvas: HTMLCanvasElement) {
+        // https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
+        const w = window.innerWidth;
+        const h = window.innerHeight
+    
+        const ctx: CanvasRenderingContext2D = function() {
+            const tmp = canvas.getContext("2d");
+            if (tmp == null) {
+                throw "CanvasRenderingContext2D is null";
+            }
+            return tmp;
+        }();
+    
+        const ratio = window.devicePixelRatio || 1;
+    
+        canvas.width = w * ratio;
+        canvas.height = h * ratio;
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+        
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    
+        return canvas;
     }
 }
