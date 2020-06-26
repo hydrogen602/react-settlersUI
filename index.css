@@ -108,8 +108,12 @@ body {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     position: relative;
-    margin: auto;
+
+    display: block;
+    
     float: right;
+
+    margin-top: 3em;
 
     color: white;
 }

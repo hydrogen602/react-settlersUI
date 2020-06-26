@@ -36,13 +36,18 @@ export class Player {
         return token in Player.playerDict;
     }
 
-    static fromJson(data: object): Player {
+    static fromJson(data: object, returnNullOnMissingPlayer?: boolean): Player | null {
+
         JsonParser.requireName(data, 'Player');
         const token = JsonParser.requireString(data, 'token');
 
         if (token in Player.playerDict) {
             // player already exists
             return Player.playerDict[token];
+        }
+
+        if (returnNullOnMissingPlayer) {
+            return null;
         }
 
         return new Player(

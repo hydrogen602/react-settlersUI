@@ -5,6 +5,7 @@ import { GameMap } from "./canvasCode/map/GameMap";
 import { JsonParser } from "../jsonParser";
 import { StatusBar, PlayerList } from "./statusBar";
 import { Player } from "./canvasCode/mechanics/Player";
+import { Turn } from "./canvasCode/mechanics/Turn";
 
 interface IProps {
     conn: Connection
@@ -13,8 +14,9 @@ interface IProps {
 interface IState {
     gm: GameMap,
     gameStarted: boolean,
-    currNotification: string | null
-    playerList: Array<string>
+    currNotification: string | null,
+    playerList: Array<string>,
+    currentTurn: Turn
 }
 
 export class Game extends React.Component<IProps, IState> {
@@ -27,7 +29,8 @@ export class Game extends React.Component<IProps, IState> {
             gm: new GameMap([], [], []),
             gameStarted: false,
             currNotification: null,
-            playerList: []
+            playerList: [],
+            currentTurn: null
         }
     }
 
@@ -57,6 +60,16 @@ export class Game extends React.Component<IProps, IState> {
             });
         }
 
+        if (JsonParser.askName(obj) == 'Turn') {
+            // should only be received on a new turn
+            const turn = Turn.fromJson(obj);
+
+            this.setState({
+                currentTurn: turn,
+                currNotification: `${turn.currentPlayer.getName()}'s turn`
+            });
+        }
+
         if (JsonParser.askType(obj) == "notification") {
             const msg = JsonParser.requireString(obj, 'content');
 
@@ -77,8 +90,8 @@ export class Game extends React.Component<IProps, IState> {
         const msg = this.state.currNotification == null ? defaultMsg : this.state.currNotification
         return (
             <div>
-                <StatusBar msg={msg} onClick={() => {this.props.conn.send({'debug': 'startGame'})}}/>
-                <PlayerList names={this.state.playerList}/>
+                <StatusBar msg={msg} onClick={() => {this.props.conn.send({'debug': 'startGame'})}} gameStarted={this.state.gameStarted}/>
+                <PlayerList names={this.state.playerList} currentPlayer={(this.state.currentTurn) ? this.state.currentTurn.currentPlayer.getName() : null}/>
                 <Canvas gm={this.state.gm}/>
             </div>
         )
