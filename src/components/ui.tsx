@@ -48,6 +48,7 @@ export class UI extends React.Component<{}, IState> {
     }
 
     private onWebSockFailure(ev: Event) {
+        console.log("back to login")
         this.setState({
             progressState: atLogin,
             failedConn: true

@@ -73,10 +73,11 @@ export class Game extends React.Component<IProps, IState> {
     }
 
     render() {
-        let msg = this.state.currNotification == null ? "Game hasn't started yet" : this.state.currNotification
+        const defaultMsg = this.state.gameStarted ? "Game running" : "Game hasn't started yet"
+        const msg = this.state.currNotification == null ? defaultMsg : this.state.currNotification
         return (
             <div>
-                <StatusBar msg={msg}/>
+                <StatusBar msg={msg} onClick={() => {this.props.conn.send({'debug': 'startGame'})}}/>
                 <PlayerList names={this.state.playerList}/>
                 <Canvas gm={this.state.gm}/>
             </div>

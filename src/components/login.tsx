@@ -54,7 +54,7 @@ export class LoginForm extends React.Component<IProp, IState> {
                 <input required name="host" type="text" placeholder="Hostname" value={this.state.host} onChange={this.handleChange}></input>
                 <input required name="port" type="number" placeholder="Port" value={this.state.port} onChange={this.handleChange}></input>
 
-                <button >Join Game</button>
+                <button className="button">Join Game</button>
             </form>
         )
     }

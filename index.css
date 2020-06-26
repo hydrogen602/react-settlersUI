@@ -26,6 +26,13 @@ body {
     z-index: 1;
 }
 
+.button {
+    border: 0px;
+    border-radius: 0.3em;
+    display: block;
+    background-color: #F39C12;
+}
+
 /* ================= Login Form ================= */
 
 #loginForm {
@@ -42,12 +49,7 @@ body {
 }
 
 #loginForm button {
-    border: 0px;
-    border-radius: 0.3em;
-    /*margin: 0.4em;*/
     margin: 1em auto;
-    display: block;
-    background-color: #F39C12;
     padding: 0.5em;
     width: 60%;
 }
@@ -96,6 +98,12 @@ body {
     color: white;
 }
 
+.statusBar button {
+    float: left;
+    display: block;
+    padding: 0.4em;
+}
+
 .playerList {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -117,6 +125,10 @@ canvas {
     top: 0px;
     left: 0px;
     z-index: 0;
+}
+
+i {
+    color: #F39C12;
 }
 
 

@@ -1,6 +1,15 @@
 import { JsonParser } from "./jsonParser";
 
+export interface ConnectionData {
+    name: string,
+    host: string,
+    port: number,
+    token: string
+}
 
+/**
+ * sets sessionStorage 'connection' to a json representation of ConnectionData
+ */
 export class Connection {
 
     private ws: WebSocket | null;
@@ -8,6 +17,8 @@ export class Connection {
     private token: string | null;
 
     private failedAttempts: number;
+
+    private verifiedConnection: boolean; // Hi - Hello echo verifies connection
 
     private name: string;
     private host: string;
@@ -34,6 +45,8 @@ export class Connection {
 
         this.connectedOnce = false;
         this.failedAttempts = 0;
+
+        this.verifiedConnection = false;
         
         this.connect();
     }
@@ -54,16 +67,25 @@ export class Connection {
         this.ws.onclose = this.onclose.bind(this);
         this.ws.onmessage = this.onmessage.bind(this);
         this.ws.onopen = this.onopen.bind(this);
+
+        this.verifiedConnection = false;
     }
 
     private onclose(ev: CloseEvent) {
         console.log("WS closed", ev);
-        if (this.connectedOnce) {
+        this.verifiedConnection = false;
+        
+        if (ev.code >= 4000 && ev.code < 4100) {
+            // my error codes
+            console.log("Connection failed due to:", ev.reason);
+            this.onWebSockFailure(ev);
+        }
+        else if (this.connectedOnce) {
             if (this.failedAttempts > 5) {
                 return;
             }
 
-            setTimeout(function() {
+            setTimeout(() => {
                 //newNotification('Reconnecting...');
                 this.connect();
             }, 3000);
@@ -72,6 +94,8 @@ export class Connection {
 
     private onerror(ev: Event) {
         console.log("WS errored", ev);
+        this.verifiedConnection = false;
+
         this.failedAttempts += 1
         if (!this.connectedOnce) {
             this.onWebSockFailure(ev);
@@ -81,6 +105,7 @@ export class Connection {
     private onmessage(ev: MessageEvent) {
         if (ev.data == "Hello") {
             console.log("Successful Echo, Server is alive!");
+            this.verifiedConnection = true;
         }
         else {
             try {
@@ -92,8 +117,17 @@ export class Connection {
                     const token: string = JsonParser.requireString(obj, 'token');
                     if (!this.token) {
                         // remember the token
-                        console.log('Got token', token)
+                        console.log('Got token', token);
                         this.token = token;
+
+                        const data: ConnectionData = {
+                            token: this.token,
+                            host: this.host,
+                            port: this.port,
+                            name: this.name
+                        }
+
+                        sessionStorage.setItem('connection', JSON.stringify(data));
                     }
                     return;
                 }
