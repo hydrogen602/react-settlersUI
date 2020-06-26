@@ -23,14 +23,22 @@ export class UI extends React.Component<{}, IState> {
     
     constructor(props: {}) {
         super(props);
+
+        const maybe = Connection.regainOldConnectionIfExists(this.onWebSockFailure.bind(this), this.onWebSockOpen.bind(this));
+        if (maybe) {
+            console.log('regained old connection');
+        }
+        else {
+            console.log('no old connection found');
+        }
         
         this.state = {
-            progressState: atLogin,
+            progressState: (maybe) ? atLogin : atConnecting,
             failedConn: false,
             name: null,
             host: null,
             port: null,
-            conn: null,
+            conn: (maybe) ? maybe : null,
         };
 
         this.loginSubmitCallback = this.loginSubmitCallback.bind(this);

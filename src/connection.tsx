@@ -1,10 +1,19 @@
 import { JsonParser } from "./jsonParser";
 
-export interface ConnectionData {
+interface ConnectionData {
     name: string,
     host: string,
     port: number,
     token: string
+}
+
+function connectionDataFromJson(o: object): ConnectionData {
+    return {
+        name: JsonParser.requireString(o, 'name'),
+        host: JsonParser.requireString(o, 'host'),
+        port: JsonParser.requireNumber(o, 'port'),
+        token: JsonParser.requireString(o, 'token')
+    }
 }
 
 /**
@@ -31,7 +40,7 @@ export class Connection {
 
     private connectedOnce: boolean;
 
-    constructor(host: string, port: number, name: string, onWebSockFailure: (ev: Event) => void, onWebSockOpen: (ev: Event) => void) {
+    constructor(host: string, port: number, name: string, onWebSockFailure: (ev: Event) => void, onWebSockOpen: (ev: Event) => void, token?: string) {
 
         this.host = encodeURIComponent(host);
         this.name = encodeURIComponent(name);
@@ -47,8 +56,34 @@ export class Connection {
         this.failedAttempts = 0;
 
         this.verifiedConnection = false;
+
+        if (token) {
+            this.token = token;
+        }
         
         this.connect();
+    }
+
+    /**
+     * 
+     * @param onWebSockFailure a callback for handling errors
+     * @param onWebSockOpen a callback for handling a successful connection
+     * 
+     * @returns a Connection object if connection data is found in sessionStorage, else null
+     */
+    static regainOldConnectionIfExists(onWebSockFailure: (ev: Event) => void, onWebSockOpen: (ev: Event) => void): Connection | null {
+        const result = sessionStorage.getItem('connection');
+        if (result) {
+            const dat = connectionDataFromJson(JSON.parse(result)); // json parsing shouldn't fail
+            return new Connection(dat.host, dat.port, dat.name, onWebSockFailure, onWebSockOpen, dat.token);
+        }
+        else {
+            return null;
+        }
+    }
+
+    getName() {
+        return this.name;
     }
 
     private getUrl() {
@@ -139,8 +174,9 @@ export class Connection {
                     console.log('Got invalid JSON')
                 }
                 else {
-                    console.log('Error:', e)
-                    console.log('Error data:', e.data)
+                    console.log('Error:', e);
+                    console.log('Error data:', e.data);
+                    throw(e);
                 }
             }
         }

@@ -40,6 +40,13 @@ export class JsonParser {
         return value;
     }
 
+    static requireAny(o: any, name: string): any {
+        if (!(name in o)) {
+            throw new JsonParserError("Missing json field: '" + name + "'");
+        }
+        return o[name];
+    }
+
     static requireName(o: any, nameRequired: string) {
         if (!('__name__' in o)) {
             throw new JsonParserError("Missing json field: '" + name + "'");
