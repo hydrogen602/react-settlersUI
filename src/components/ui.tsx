@@ -33,7 +33,7 @@ export class UI extends React.Component<{}, IState> {
         }
         
         this.state = {
-            progressState: (maybe) ? atLogin : atConnecting,
+            progressState: (maybe) ? atConnecting : atLogin,
             failedConn: false,
             name: null,
             host: null,
