@@ -2,6 +2,7 @@ import { HexPoint, RelPoint } from "../graphics/Point";
 import { defined } from "../util";
 import { Hex } from "../graphics/Hex";
 import { Player } from "../mechanics/Player";
+import { JsonParser, JsonParserError } from "../../../jsonParser";
 
 export class Settlement {
     private p: HexPoint;
@@ -125,5 +126,28 @@ export class Settlement {
         ctx.closePath();
 
         ctx.stroke();
+    }
+
+    static fromJson(data: object): Settlement {
+        const name = JsonParser.askName(data);
+        if (name != 'Settlement' && name != 'City') {
+            throw new JsonParserError(`Wrong name, got ${name} instead of Settlement or City`);
+        }
+
+        const owner = Player.fromJson(JsonParser.requireObject(data, 'owner'), true);
+        const position = HexPoint.fromJson(JsonParser.requireObject(data, 'position'));
+
+        if (!owner) {
+            console.error(owner);
+            throw Error('Unknown player');
+        }
+
+        const s = new Settlement(position, owner);
+
+        if (name == 'City') {
+            s._isCity = true;
+        }
+
+        return s;
     }
 }

@@ -105,22 +105,23 @@ body {
 }
 
 .playerList {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
     position: relative;
 
     display: block;
     
-    float: right;
+    float: left;
 
     margin-top: 3em;
 
     color: white;
 }
 
+/*
 .playerList p {
-    padding-left: 0.5em;
-}
+    padding-left: 0.2em;
+}*/
 
 .popup {
     z-index: 99;

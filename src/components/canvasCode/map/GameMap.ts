@@ -28,9 +28,16 @@ export class GameMap {
             tilesArr.push(Tile.fromJson(t));
         }
 
-        //tmp = JsonParser.requireArray(data, 'points')
+        tmp = JsonParser.requireArray(data, 'points');
+        
+        const settlementsArr: Array<Settlement> = [];
+        for (const s of tmp) {
+            settlementsArr.push(Settlement.fromJson(s));
+        }
 
-        return new GameMap(tilesArr, [], []);
+        tmp = JsonParser.requireArray(data, 'lines');
+
+        return new GameMap(tilesArr, settlementsArr, []);
     }
 
     getTiles() {

@@ -7,6 +7,8 @@ import { StatusBar, PlayerList } from "./statusBar";
 import { Player } from "./canvasCode/mechanics/Player";
 import { Turn } from "./canvasCode/mechanics/Turn";
 import { Popup } from "./popup";
+import { Hex } from "./canvasCode/graphics/Hex";
+import { RelPoint, AbsPoint, HexPoint } from "./canvasCode/graphics/Point";
 
 interface IProps {
     conn: Connection
@@ -99,6 +101,64 @@ export class Game extends React.Component<IProps, IState> {
         }
     }
 
+    mouseHoverHandler(e: React.MouseEvent) {
+        const p = new RelPoint(e.clientX, e.clientY);
+        const r = Hex.distanceFromNearestHexCorner(p);
+
+        if (r < Hex.getSideLength() / 4) {
+            // ???
+        }
+    }
+
+    mouseHandler(e: React.MouseEvent) {
+        const p = new RelPoint(e.clientX, e.clientY);
+        const r = Hex.distanceFromNearestHexCorner(p);
+
+        if (r < Hex.getSideLength() / 4) {
+            // clicked on a corner
+            const h = p.toHexPoint();
+            console.log("new settlement");
+            this.props.conn.send({'type': 'action', 'content': 'placeSettlement', 'args': [h.toJsonSerializable()]})
+        }
+
+        // if (GameManager.instance.mayPlaceRobber) {
+        //     const tile = m.getAllowedRobberPlace(p.toAbsPoint());
+        //     if (tile != undefined) {
+        //     }
+        //     else {
+                
+        //     }
+        // }
+        // else if (GameManager.instance.mayPlaceSettlement) {            
+            
+        //     if (r < Hex.getSideLength() / 4) {
+        //         // clicked on a corner
+        //         const h = p.toHexPoint();
+        //         console.log("new settlement");
+        //     }
+        // }
+        // else if (GameManager.instance.mayPlaceCity) {
+        //     // strokeCity
+        //     if (r < Hex.getSideLength() / 3.5) {
+        //         const h = p.toHexPoint();
+
+        //         if (m.isAllowedCity(h)) {
+        //             m.addCity(h);
+        //         }
+        //         else {
+        //             // console.log("not allowed position");
+        //             GameManager.instance.printErr("Illegal Position");
+        //         }
+        //     }
+        // }
+        // else if (GameManager.instance.mayPlaceRoad) {
+        //     const hArr = p.toDualHexPoint();            
+        //     if (hArr.length == 2) { // hArr is empty if not over a line 
+                
+        //     }
+        // }
+    }
+
     render() {
         const defaultMsg = this.state.gameStarted ? "Game running" : "Game hasn't started yet"
         const msg = this.state.currNotification == null ? defaultMsg : this.state.currNotification
@@ -110,7 +170,7 @@ export class Game extends React.Component<IProps, IState> {
                     {(this.state.currentTurn && this.state.currentTurn.currentPlayer.getName() == this.props.conn.getName()) ? <button className="button" onClick={() => {this.props.conn.send({'type': 'action', 'content': 'nextTurn'})}}>End Turn</button> : null}
                 </StatusBar>
                 <PlayerList names={this.state.playerList} currentPlayer={(this.state.currentTurn) ? this.state.currentTurn.currentPlayer.getName() : null}/>
-                <Canvas gm={this.state.gm}/>
+                <Canvas gm={this.state.gm} onClick={this.mouseHandler.bind(this)} onHover={this.mouseHoverHandler.bind(this)}/>
             </div>
         )
     }

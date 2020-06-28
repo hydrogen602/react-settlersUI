@@ -1,4 +1,5 @@
 import { RelPoint, AbsPoint, HexPoint } from "./Point";
+import { square } from "../util";
 
 export class Hex {
 
@@ -193,6 +194,13 @@ export class Hex {
         ctx.lineTo(p.x, p.y);
     
         ctx.stroke()
+    }
+
+    static distanceFromNearestHexCorner(p: AbsPoint|RelPoint) {
+        const abs = p.toAbsPoint(); // if already absolute, it returns a copy of itself
+        const backConvertedHex = p.toHexPoint().toAbsPoint();
+
+        return Math.sqrt(square(abs.x - backConvertedHex.x) + square(abs.y - backConvertedHex.y));
     }
 
 }

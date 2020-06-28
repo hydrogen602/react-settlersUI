@@ -1,16 +1,19 @@
 import * as React from "react";
 import { GameMap } from "./canvasCode/map/GameMap";
+import { Hex } from "./canvasCode/graphics/Hex";
 
 interface IProps {
-    gm: GameMap
+    gm: GameMap,
+    onClick: (e: React.MouseEvent) => void,
+    onHover: (e: React.MouseEvent) => void
 }
 
-interface IState {
-    x: number,
-    y: number,
-}
+// interface IState {
+//     x: number,
+//     y: number,
+// }
 
-export class Canvas extends React.Component<IProps, IState> {
+export class Canvas extends React.Component<IProps, {}> {
 
     private canvasRef: React.RefObject<HTMLCanvasElement>;
 
@@ -18,10 +21,10 @@ export class Canvas extends React.Component<IProps, IState> {
         super(props);
         this.canvasRef = React.createRef();
 
-        this.state = {
-            x: 0,
-            y: 0
-        }
+        // this.state = {
+        //     x: 0,
+        //     y: 0
+        // }
     }
 
     componentDidMount() {
@@ -52,21 +55,22 @@ export class Canvas extends React.Component<IProps, IState> {
 
         this.props.gm.draw(ctx);
 
-        ctx.beginPath();
-        ctx.arc(this.state.x, this.state.y, 10, 0, 6.28);
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.arc(this.state.x, this.state.y, 10, 0, 6.28);
+        // ctx.fill();
     }
 
 
-    onClick(e: React.MouseEvent) {
+    // onClick(e: React.MouseEvent) {
+    //     // the on-click
         
-        this.setState({
-            x: e.clientX,
-            y: e.clientY
-        });
+    //     this.setState({
+    //         x: e.clientX,
+    //         y: e.clientY
+    //     });
 
-        console.log(e.clientX, e.clientY);
-    }
+    //     console.log(e.clientX, e.clientY);
+    // }
 
     render() {
         return (
@@ -74,7 +78,8 @@ export class Canvas extends React.Component<IProps, IState> {
                 ref={this.canvasRef}
                 width={window.innerWidth}
                 height={window.innerHeight}
-                onClick={this.onClick.bind(this)}
+                onClick={this.props.onClick}
+                onMouseMove={this.props.onHover}
             />
         )
     }

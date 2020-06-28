@@ -46,6 +46,14 @@ export class HexPoint extends Point {
         return new HexPoint(col, row);
     }
 
+    toJsonSerializable(): object {
+        return {
+            '__name__': 'HexPoint',
+            'row': this.y,
+            'col': this.x
+        }
+    }
+
     toAbsPoint(): AbsPoint {
         return Hex.hexGridToPxUnshifted(this.y, this.x);
     }
