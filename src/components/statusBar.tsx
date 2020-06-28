@@ -2,14 +2,16 @@ import * as React from "react";
 
 interface IProps {
     msg: string,
-    onClick: () => void,
-    gameStarted: boolean
+    children: React.ReactNode
 }
+
+// {(props.isTurn) ? <button className="button" onClick={props.onClick}>Start Game</button> : null}
+
 
 export function StatusBar(props: IProps) {
     return (
         <div className="window statusBar" style={{textAlign: 'center'}}>
-            {(props.gameStarted) ? null : <button className="button" onClick={props.onClick}>Start Game</button>}
+            {props.children}
             <div>{props.msg}</div>
         </div>
     );

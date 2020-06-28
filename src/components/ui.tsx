@@ -98,6 +98,9 @@ export class UI extends React.Component<{}, IState> {
                 );
         }
         else if (this.state.progressState == atGame) {
+            if (!this.state.conn) {
+                throw Error("this shouldn't happen");
+            }
             return (
                 <Game conn={this.state.conn}/>
             )

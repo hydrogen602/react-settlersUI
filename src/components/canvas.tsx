@@ -12,7 +12,7 @@ interface IState {
 
 export class Canvas extends React.Component<IProps, IState> {
 
-    private canvasRef: React.MutableRefObject<HTMLCanvasElement>;
+    private canvasRef: React.RefObject<HTMLCanvasElement>;
 
     constructor(props: IProps) {
         super(props);
@@ -26,14 +26,25 @@ export class Canvas extends React.Component<IProps, IState> {
 
     componentDidMount() {
         const canvas = this.canvasRef.current;
+        if (!canvas) {
+            throw Error("this shouldn't happen, canvasRef not set")
+        }
+
         this.makeHiDPICanvas(canvas);
         this.componentDidUpdate();
     }
     
     componentDidUpdate() {
-        console.log('update');
+        //console.log('update');
         const canvas = this.canvasRef.current;
-        const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+        if (!canvas) {
+            throw Error("this shouldn't happen, canvasRef not set")
+        }
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+            throw Error("getContext('2d') failed");
+        }
         // implement draw on ctx here
 
         ctx.fillStyle = '#8395c1'; // background color is set here!
@@ -47,7 +58,7 @@ export class Canvas extends React.Component<IProps, IState> {
     }
 
 
-    onClick(e: MouseEvent) {
+    onClick(e: React.MouseEvent) {
         
         this.setState({
             x: e.clientX,

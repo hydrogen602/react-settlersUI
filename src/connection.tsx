@@ -36,7 +36,7 @@ export class Connection {
     private onWebSockFailure: (ev: Event) => void;
     private onWebSockOpen: (ev: Event) => void;
 
-    private jsonMessageHandler: (obj: object) => void;
+    private jsonMessageHandler: (obj: MessageEvent) => void;
 
     private connectedOnce: boolean;
 
@@ -56,6 +56,10 @@ export class Connection {
         this.failedAttempts = 0;
 
         this.verifiedConnection = false;
+
+        this.jsonMessageHandler = (a: any) => { throw Error("jsonMessageHandler not set"); };
+        this.ws = null;
+        this.token = null;
 
         if (token) {
             this.token = token;
@@ -188,8 +192,13 @@ export class Connection {
         this.onWebSockOpen(ev);
         this.connectedOnce = true;
 
-        this.ws.send('Hi');
-        this.ws.send('history');
+        if (this.ws) {
+            this.ws.send('Hi');
+            this.ws.send('history');
+        }
+        else {
+            throw Error('this shouldn\'t happen');
+        }
     }
 
     public setJsonMessageHandler(f:(ev: MessageEvent) => void) {
