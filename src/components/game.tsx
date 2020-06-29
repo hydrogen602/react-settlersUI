@@ -3,10 +3,10 @@ import { Connection } from "../connection";
 import { Canvas } from "./canvas"
 import { GameMap } from "./canvasCode/map/GameMap";
 import { JsonParser } from "../jsonParser";
-import { StatusBar, PlayerList } from "./statusBar";
+import { StatusBar, PlayerList } from "./gameOverlays/statusBar";
 import { Player } from "./canvasCode/mechanics/Player";
 import { Turn } from "./canvasCode/mechanics/Turn";
-import { Popup } from "./popup";
+import { Popup } from "./gameOverlays/popup";
 import { Hex } from "./canvasCode/graphics/Hex";
 import { RelPoint, AbsPoint, HexPoint } from "./canvasCode/graphics/Point";
 
