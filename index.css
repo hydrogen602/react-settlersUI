@@ -89,7 +89,7 @@ body {
 
 .statusBar {
     position: relative;
-    float: top;
+
     width: 80%;
     margin: auto;
     border-top-left-radius: 0px;
@@ -137,6 +137,22 @@ body {
     font-size: 1em;
 }
 
+.inventory {
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    
+    width: 80%;
+
+    text-align: center;
+
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+    color: white;
+}
 
 
 canvas {

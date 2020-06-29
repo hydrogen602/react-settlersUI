@@ -9,6 +9,8 @@ import { Turn } from "./canvasCode/mechanics/Turn";
 import { Popup } from "./gameOverlays/popup";
 import { Hex } from "./canvasCode/graphics/Hex";
 import { RelPoint, AbsPoint, HexPoint } from "./canvasCode/graphics/Point";
+import { Inventory } from "./canvasCode/mechanics/Inventory";
+import { InventoryDisplay } from "./gameOverlays/inventoryDisplay";
 
 interface IProps {
     conn: Connection
@@ -21,6 +23,7 @@ interface IState {
     currError: string | null,
     playerList: Array<string>,
     currentTurn: Turn | null,
+    inventory: Inventory | null,
 }
 
 export class Game extends React.Component<IProps, IState> {
@@ -35,13 +38,16 @@ export class Game extends React.Component<IProps, IState> {
             currNotification: null,
             currError: null,
             playerList: [],
-            currentTurn: null
+            currentTurn: null,
+            inventory: null
         }
     }
 
     private onMessage(obj: object) {
         //console.log(obj);
         if (JsonParser.askName(obj) == 'Game') {
+            this.props.conn.sendMessage('update', 'inventory', []);
+
             const gameMapJson = JsonParser.requireObject(obj, 'gameMap');
 
             const gameMap = GameMap.fromJson(gameMapJson);
@@ -76,6 +82,10 @@ export class Game extends React.Component<IProps, IState> {
                 currentTurn: turn,
                 currNotification: `${turn.currentPlayer.getName()}'s turn`
             });
+        }
+
+        else if (JsonParser.askName(obj) == 'Inventory' || JsonParser.askName(obj) == 'ExpandedInventory') {
+            this.setState({ 'inventory': Inventory.fromJson(obj) });
         }
 
         else if (JsonParser.askType(obj) == "notification") {
@@ -169,6 +179,7 @@ export class Game extends React.Component<IProps, IState> {
                     {(this.state.gameStarted) ? null : <button className="button" onClick={() => {this.props.conn.send({'debug': 'startGame'})}}>Start Game</button>}
                     {(this.state.currentTurn && this.state.currentTurn.currentPlayer.getName() == this.props.conn.getName()) ? <button className="button" onClick={() => {this.props.conn.send({'type': 'action', 'content': 'nextTurn'})}}>End Turn</button> : null}
                 </StatusBar>
+                <InventoryDisplay inv={this.state.inventory}/>
                 <PlayerList names={this.state.playerList} currentPlayer={(this.state.currentTurn) ? this.state.currentTurn.currentPlayer.getName() : null}/>
                 <Canvas gm={this.state.gm} onClick={this.mouseHandler.bind(this)} onHover={this.mouseHoverHandler.bind(this)}/>
             </div>

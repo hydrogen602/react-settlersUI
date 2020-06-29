@@ -1,4 +1,4 @@
-import { JsonParser } from "./jsonParser";
+import { JsonParser, JsonMessage } from "./jsonParser";
 
 interface ConnectionData {
     name: string,
@@ -218,6 +218,10 @@ export class Connection {
         else {
             console.log('Disconnected');
         }
+    }
+
+    public sendMessage(type: string, content: string, args: Array<any>) {
+        this.send(JsonMessage(type, content, args));
     }
 
     public getHistory() {

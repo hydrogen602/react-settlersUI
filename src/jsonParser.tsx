@@ -1,4 +1,15 @@
 
+export function JsonMessage(type: string, content: string, args: Array<any>) {
+    if (args.length > 0) {
+        return { "type": type, "content": content, "args": args }
+    }
+    else {
+        return { "type": type, "content": content }
+    }
+    
+}
+
+
 export class JsonParserError extends Error {
     // from https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html
     constructor(message?: string) {

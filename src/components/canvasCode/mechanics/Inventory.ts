@@ -1,6 +1,8 @@
 //import { ResourceType } from "./dataTypes";
 import { defined, assertInt, assert } from "../util";
 import { JsonParser, JsonParserError } from "../../../jsonParser";
+import { Settlement } from "../map/Settlement";
+import { Road } from "../map/Road";
 
 // my own inventory system cause map is limited
 
@@ -11,8 +13,8 @@ import { JsonParser, JsonParserError } from "../../../jsonParser";
 export class Inventory {
     
     private content: Map<string, number>;
-    private pointFeatures: Array<string>;
-    private lineFeatures: Array<string>;
+    private pointFeatures: Array<Settlement>;
+    private lineFeatures: Array<Road>;
 
     // private static conversionMap = new Map([
     //     ['Wheat', ResourceType.Wheat],
@@ -57,7 +59,15 @@ export class Inventory {
         }
 
         if (name == 'ExpandedInventory') {
-            /*s._isCity = true;*/
+            const settlementArr = JsonParser.requireArray(data, 'pointFeatures');
+            for (const it of settlementArr) {
+                inv.pointFeatures.push(Settlement.fromJson(it));
+            }
+
+            const roadArr = JsonParser.requireArray(data, 'lineFeatures');
+            for (const it of roadArr) {
+                //inv.pointFeatures.push(Road.fromJson(it));
+            }
         }
 
         return inv;

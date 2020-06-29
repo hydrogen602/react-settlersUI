@@ -1,37 +1,46 @@
 import { HexPoint, RelPoint } from "../graphics/Point";
 import { defined } from "../util";
 import { Player } from "../mechanics/Player";
+import { JsonParser } from "../../../jsonParser";
 
 export class Road {
-    private p1: HexPoint;
-    private p2: HexPoint;
+    private p1: HexPoint | null;
+    private p2: HexPoint | null;
     // two endpoints of the line
 
     private owner: Player;
 
-    constructor(p1: HexPoint, p2: HexPoint, owner: Player) {
+    constructor(p1: HexPoint | null, p2: HexPoint | null, owner: Player) {
         this.p1 = p1;
         this.p2 = p2;
         this.owner = owner;
 
-        defined(p1);
-        defined(p2);
+        // defined(p1);
+        // defined(p2);
         defined(owner);
 
         //this.owner.addRoad(this);
     }
 
-    isEqual(p1: HexPoint, p2: HexPoint): boolean {
+    isEqual(p1: HexPoint | null, p2: HexPoint | null): boolean {
+        if (!p1 || !p2 || !this.p1 || !this.p2) {
+            return false;
+        }
+
         if (p1.isEqual(this.p1) && p2.isEqual(this.p2)) {
-            return true
+            return true;
         }
         if (p1.isEqual(this.p2) && p2.isEqual(this.p1)) {
-            return true
+            return true;
         }
         return false;
     }
 
     isAdjacent(p: HexPoint): boolean {
+        if (!p  || !this.p1 || !this.p2) {
+            return false;
+        }
+
         if (p.isEqual(this.p1) || p.isEqual(this.p2)) {
             return true;
         }
@@ -39,6 +48,10 @@ export class Road {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
+        if (!this.p1 || !this.p2) {
+            return;
+        }
+
         ctx.strokeStyle = "black";
         ctx.lineWidth = 14;
         ctx.beginPath();
@@ -65,4 +78,21 @@ export class Road {
         ctx.stroke();
     }
 
+    static fromJson(data: object): Road {
+        const name = JsonParser.requireName(data, 'Road');
+
+        const owner = Player.fromJson(JsonParser.requireObject(data, 'owner'), true);
+
+        const point1 = HexPoint.fromJson(JsonParser.requireObject(data, 'point1'));
+        const point2 = HexPoint.fromJson(JsonParser.requireObject(data, 'point2'));
+
+        if (!owner) {
+            console.error(owner);
+            throw Error('Unknown player');
+        }
+
+        const r = new Road(point1, point2, owner);
+
+        return r;
+    }
 }
