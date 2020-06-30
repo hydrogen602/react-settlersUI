@@ -88,6 +88,12 @@ export class Game extends React.Component<IProps, IState> {
                 currentTurn: turn,
                 currNotification: `${turn.currentPlayer.getName()}'s turn`
             });
+
+            if (turn.dieValue) {
+                this.state.gm.dieRolled(turn.dieValue);
+            }
+
+            console.log(turn);
         }
 
         else if (JsonParser.askName(obj) == 'Inventory' || JsonParser.askName(obj) == 'ExpandedInventory') {
@@ -171,6 +177,7 @@ export class Game extends React.Component<IProps, IState> {
                 <StatusBar msg={msg}>
                     {(this.state.gameStarted) ? null : <button className="button" onClick={() => {this.props.conn.send({'debug': 'startGame'})}}>Start Game</button>}
                     {(this.state.currentTurn && this.state.currentTurn.currentPlayer.getName() == this.props.conn.getName()) ? <button className="button" onClick={() => {this.props.conn.send({'type': 'action', 'content': 'nextTurn'})}}>End Turn</button> : null}
+                    {(this.state.currentTurn && this.state.currentTurn.dieValue) ? <p>{`Die Roll: ${this.state.currentTurn.dieValue}`}</p> : null}
                 </StatusBar>
 
                 <InventoryDisplay

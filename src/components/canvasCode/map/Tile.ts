@@ -1,5 +1,5 @@
 import { Biome, Desert, getBiomeByName } from "./Biome";
-import { defined } from "../util";
+import { defined, assertInt } from "../util";
 import { HexPoint, AbsPoint, Hex } from "../graphics/Point"
 import { JsonParserError, JsonParser } from "../../../jsonParser"
 // import { Settlement } from "./Settlement";
@@ -67,9 +67,15 @@ export class Tile {
     //     }
     // }
 
-    // deactivate() {
-    //     this.active = false;
-    // }
+    activateIfDiceValueMatchesElseDeactivate(value: number) {
+        assertInt(value);
+        if (value == this.diceValue && !this.isDisabledByRobber) { // no profits if the robber is around
+            this.active = true;
+        }
+        else {
+            this.active = false;
+        }
+    }
 
     highlightIfActive(ctx: CanvasRenderingContext2D) {
         if (this.active && !this.isDisabledByRobber) {
@@ -106,7 +112,15 @@ export class Tile {
         ctx.lineWidth = 1;
 
         Hex.strokeHex(this.p.y, this.p.x, ctx);
+    }
 
+    /**
+     * Call this function after draw() has
+     * been called on all tiles
+     * 
+     * @param ctx CanvasRenderingContext2D
+     */
+    draw2(ctx: CanvasRenderingContext2D) {
         if (this.isDisabledByRobber) {
             this.strokeRobber(ctx);
         }

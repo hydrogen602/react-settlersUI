@@ -104,6 +104,13 @@ body {
     padding: 0.4em;
 }
 
+.statusBar p {
+    position: absolute;
+    right: 16px;
+    top: 0px;
+    display: block;
+}
+
 .playerList {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;

@@ -3,6 +3,7 @@ import { Tile } from "./Tile";
 import { Settlement } from "./Settlement";
 import { Road } from "./Road";
 import { JsonParser } from "../../../jsonParser";
+import { assertInt } from "../util";
 
 export class GameMap {
     private tilesArr: Array<Tile>;
@@ -64,12 +65,24 @@ export class GameMap {
             e.draw(ctx);
         });
 
+        this.tilesArr.forEach(e => {
+            e.draw2(ctx);
+        });
+
         this.roadsArr.forEach(r => {
             r.draw(ctx);
         });
 
         this.settlementsArr.forEach(s => {
             s.draw(ctx);
+        });
+    }
+
+    dieRolled(value: number) {
+        assertInt(value);
+
+        this.tilesArr.forEach(tile => {
+            tile.activateIfDiceValueMatchesElseDeactivate(value);
         });
     }
 }
