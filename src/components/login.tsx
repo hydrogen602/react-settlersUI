@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ConnectionData } from "../dataTypes";
 
 interface IState {
     name: string,
@@ -8,7 +9,7 @@ interface IState {
 }
 
 interface IProp {
-    callback: (name: string, host: string, port: number, color: string) => void
+    callback: (data: ConnectionData) => void
 }
 
 export class LoginForm extends React.Component<IProp, IState> {
@@ -41,7 +42,14 @@ export class LoginForm extends React.Component<IProp, IState> {
         const port = parseInt(this.state.port);
         if (this.state.name != '' && this.state.host != '' && port.toString() != "NaN" && port > 0 && this.state.color != '') {
             console.log("yeet", this.state);
-            this.props.callback(this.state.name, this.state.host, port, this.state.color);
+
+            this.props.callback({
+                name: this.state.name,
+                host: this.state.host,
+                port: port,
+                color: this.state.color,
+                token: null
+            });
         }
 
         event.preventDefault();

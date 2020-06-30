@@ -1,22 +1,5 @@
 import { JsonParser, JsonMessage } from "./jsonParser";
-
-interface ConnectionData {
-    name: string,
-    host: string,
-    port: number,
-    token: string,
-    color: string
-}
-
-function connectionDataFromJson(o: object): ConnectionData {
-    return {
-        name: JsonParser.requireString(o, 'name'),
-        host: JsonParser.requireString(o, 'host'),
-        port: JsonParser.requireNumber(o, 'port'),
-        token: JsonParser.requireString(o, 'token'),
-        color: JsonParser.requireString(o, 'color')
-    }
-}
+import { connectionDataFromJson, ConnectionData } from "./dataTypes"
 
 /**
  * sets sessionStorage 'connection' to a json representation of ConnectionData
@@ -25,16 +8,11 @@ export class Connection {
 
     private ws: WebSocket | null;
 
-    private token: string | null;
-
     private failedAttempts: number;
 
     private verifiedConnection: boolean; // Hi - Hello echo verifies connection
 
-    private name: string;
-    private host: string;
-    private port: number;
-    private color: string;
+    private data: ConnectionData;
 
     private onWebSockFailure: (ev: Event) => void;
     private onWebSockOpen: (ev: Event) => void;
@@ -43,15 +21,18 @@ export class Connection {
 
     private connectedOnce: boolean;
 
-    constructor(host: string, port: number, name: string, color: string, onWebSockFailure: (ev: Event) => void, onWebSockOpen: (ev: Event) => void, token?: string) {
-
-        this.host = encodeURIComponent(host);
-        this.name = encodeURIComponent(name);
-        this.color = encodeURIComponent(color);
-        if (port.toString() == 'NaN') {
+    constructor(data: ConnectionData, onWebSockFailure: (ev: Event) => void, onWebSockOpen: (ev: Event) => void) {
+        if (data.port.toString() == 'NaN') {
             throw Error("yeet the port"); 
         }
-        this.port = port;  
+        
+        this.data = {
+            host: encodeURIComponent(data.host),
+            name: encodeURIComponent(data.name),
+            color: encodeURIComponent(data.color),
+            port: data.port,
+            token: (data.token) ? data.token : null
+        }
         
         this.onWebSockFailure = onWebSockFailure;
         this.onWebSockOpen = onWebSockOpen;
@@ -63,11 +44,6 @@ export class Connection {
 
         this.jsonMessageHandler = (a: any) => { throw Error("jsonMessageHandler not set"); };
         this.ws = null;
-        this.token = null;
-
-        if (token) {
-            this.token = token;
-        }
         
         this.connect();
     }
@@ -83,7 +59,7 @@ export class Connection {
         const result = sessionStorage.getItem('connection');
         if (result) {
             const dat = connectionDataFromJson(JSON.parse(result)); // json parsing shouldn't fail
-            return new Connection(dat.host, dat.port, dat.name, dat.color, onWebSockFailure, onWebSockOpen, dat.token);
+            return new Connection(dat, onWebSockFailure, onWebSockOpen);
         }
         else {
             return null;
@@ -91,15 +67,15 @@ export class Connection {
     }
 
     getName() {
-        return this.name;
+        return this.data.name;
     }
 
     private getUrl() {
-        if (this.token != null) {
-            return `ws://${this.host}:${this.port}/${this.name}/${this.token}/${this.color}`
+        if (this.data.token != null) {
+            return `ws://${this.data.host}:${this.data.port}/${this.data.name}/${this.data.token}/${this.data.color}`
         }
         else {
-            return `ws://${this.host}:${this.port}/${this.name}/${this.color}`
+            return `ws://${this.data.host}:${this.data.port}/${this.data.name}/${this.data.color}`
         }    
     }
 
@@ -158,20 +134,12 @@ export class Connection {
 
                 if ('token' in obj) {
                     const token: string = JsonParser.requireString(obj, 'token');
-                    if (!this.token) {
+                    if (!this.data.token) {
                         // remember the token
                         console.log('Got token', token);
-                        this.token = token;
+                        this.data.token = token;
 
-                        const data: ConnectionData = {
-                            token: this.token,
-                            host: this.host,
-                            port: this.port,
-                            name: this.name,
-                            color: this.color
-                        }
-
-                        sessionStorage.setItem('connection', JSON.stringify(data));
+                        sessionStorage.setItem('connection', JSON.stringify(this.data));
                     }
                     return;
                 }

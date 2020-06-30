@@ -6,6 +6,7 @@ import { Spinner } from "./spinner";
 import { Connection } from "../connection";
 import { Game } from "./game";
 import { ColorBox } from "./colorBox";
+import { ConnectionData } from "../dataTypes";
 
 const atLogin = 0
 const atConnecting = 1
@@ -14,10 +15,7 @@ const atGame = 2
 interface IState {
     progressState: number,
     failedConn: boolean,
-    name: string | null,
-    host: string | null,
-    port: number | null,
-    color: string | null,
+    dat: ConnectionData | null,
     conn: Connection | null
 }
 
@@ -37,25 +35,19 @@ export class UI extends React.Component<{}, IState> {
         this.state = {
             progressState: (maybe) ? atConnecting : atLogin,
             failedConn: false,
-            name: null,
-            host: null,
-            port: null,
-            color: null,
+            dat: null,
             conn: (maybe) ? maybe : null,
         };
 
         this.loginSubmitCallback = this.loginSubmitCallback.bind(this);
     }
 
-    loginSubmitCallback(name: string, host: string, port: number, color: string) {
+    loginSubmitCallback(data: ConnectionData) {
         this.setState({
-            name: name,
-            host: host,
-            port: port,
-            color: color,
+            dat: data,
             progressState: atConnecting,
             failedConn: false,
-            conn: new Connection(host, port, name, color, this.onWebSockFailure.bind(this), this.onWebSockOpen.bind(this))
+            conn: new Connection(data, this.onWebSockFailure.bind(this), this.onWebSockOpen.bind(this))
         });
     }
 
@@ -110,7 +102,7 @@ export class UI extends React.Component<{}, IState> {
             )
         }
         else {
-            return <p>Hi, {this.state.name}</p>
+            return <p>Hi, {(this.state.dat) ? this.state.dat.name : null}</p>
         }
     }
 
