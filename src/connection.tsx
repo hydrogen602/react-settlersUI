@@ -150,7 +150,7 @@ export class Connection {
             try {
                 const obj = JSON.parse(ev.data);
 
-                console.log("got msg:", obj);
+                //console.log("got msg:", obj);
 
                 if ('token' in obj) {
                     const token: string = JsonParser.requireString(obj, 'token');

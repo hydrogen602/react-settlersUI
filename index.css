@@ -118,6 +118,10 @@ body {
     color: white;
 }
 
+.playerList i {
+    color: #F39C12;
+}
+
 /*
 .playerList p {
     padding-left: 0.2em;
@@ -154,16 +158,36 @@ body {
     color: white;
 }
 
+.inventory2 {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    position: relative;
+
+    display: block;
+    
+    float: right;
+
+    margin-top: 3em;
+
+    color: white;
+}
+
+.inventory2 i {
+    color: #F39C12;
+    font-size: 2.5em;
+}
+
+.inventory2 button {
+    border: 0px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
 
 canvas {
     position: absolute;
     top: 0px;
     left: 0px;
     z-index: 0;
-}
-
-i {
-    color: #F39C12;
 }
 
 

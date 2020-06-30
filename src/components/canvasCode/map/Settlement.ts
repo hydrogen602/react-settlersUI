@@ -5,15 +5,15 @@ import { Player } from "../mechanics/Player";
 import { JsonParser, JsonParserError } from "../../../jsonParser";
 
 export class Settlement {
-    private p: HexPoint;
+    private p: HexPoint | null;
     private owner: Player;
 
     private _isCity: boolean = false;
 
-    constructor(location: HexPoint, owner: Player) {
+    constructor(location: HexPoint | null, owner: Player) {
         this.p = location;
         this.owner = owner;
-        defined(this.p);
+        //defined(this.p);
         defined(this.owner);
 
         //this.owner.addSettlement(this);
@@ -34,7 +34,11 @@ export class Settlement {
         this._isCity = true;
     }
 
-    isHere(h: HexPoint) {
+    isHere(h: HexPoint | null) {
+        if (!this.p || !h) {
+            return false;
+        }
+
         return h.isEqual(this.p);
     }
 
@@ -49,6 +53,10 @@ export class Settlement {
     // }
 
     draw(ctx: CanvasRenderingContext2D) {
+        if (!this.p) {
+            return;
+        }
+        
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 4;
         ctx.fillStyle = this.owner.getColor();
@@ -135,7 +143,9 @@ export class Settlement {
         }
 
         const owner = Player.fromJson(JsonParser.requireObject(data, 'owner'), true);
-        const position = HexPoint.fromJson(JsonParser.requireObject(data, 'position'));
+
+        const tmp = JsonParser.requireObject(data, 'position');
+        const position = (tmp) ? HexPoint.fromJson(tmp) : null;
 
         if (!owner) {
             console.error(owner);

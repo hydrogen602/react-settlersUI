@@ -36,7 +36,7 @@ export class Road {
         return false;
     }
 
-    isAdjacent(p: HexPoint): boolean {
+    isAdjacent(p: HexPoint | null): boolean {
         if (!p  || !this.p1 || !this.p2) {
             return false;
         }
@@ -83,8 +83,11 @@ export class Road {
 
         const owner = Player.fromJson(JsonParser.requireObject(data, 'owner'), true);
 
-        const point1 = HexPoint.fromJson(JsonParser.requireObject(data, 'point1'));
-        const point2 = HexPoint.fromJson(JsonParser.requireObject(data, 'point2'));
+        let tmp = JsonParser.requireObject(data, 'point1');
+        const point1 = (tmp) ? HexPoint.fromJson(tmp) : null;
+        
+        tmp = JsonParser.requireObject(data, 'point2');
+        const point2 = (tmp) ? HexPoint.fromJson(tmp) : null;
 
         if (!owner) {
             console.error(owner);

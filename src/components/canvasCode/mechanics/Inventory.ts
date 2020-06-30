@@ -42,6 +42,14 @@ export class Inventory {
         return <number>tmp;
     }
 
+    getPointFeatures(): Array<Settlement> {
+        return this.pointFeatures.slice();
+    }
+
+    getLineFeatures(): Array<Road> {
+        return this.lineFeatures.slice();
+    }
+
     static fromJson(data: object): Inventory {
         const name = JsonParser.askName(data);
         if (name != 'ExpandedInventory' && name != 'Inventory') {
@@ -66,11 +74,10 @@ export class Inventory {
 
             const roadArr = JsonParser.requireArray(data, 'lineFeatures');
             for (const it of roadArr) {
-                //inv.pointFeatures.push(Road.fromJson(it));
+                inv.lineFeatures.push(Road.fromJson(it));
             }
         }
 
         return inv;
     }
-
 }
