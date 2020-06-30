@@ -5,6 +5,7 @@ import { Spinner } from "./spinner";
 
 import { Connection } from "../connection";
 import { Game } from "./game";
+import { ColorBox } from "./colorBox";
 
 const atLogin = 0
 const atConnecting = 1
@@ -16,6 +17,7 @@ interface IState {
     name: string | null,
     host: string | null,
     port: number | null,
+    color: string | null,
     conn: Connection | null
 }
 
@@ -38,20 +40,22 @@ export class UI extends React.Component<{}, IState> {
             name: null,
             host: null,
             port: null,
+            color: null,
             conn: (maybe) ? maybe : null,
         };
 
         this.loginSubmitCallback = this.loginSubmitCallback.bind(this);
     }
 
-    loginSubmitCallback(name: string, host: string, port: number) {
+    loginSubmitCallback(name: string, host: string, port: number, color: string) {
         this.setState({
             name: name,
             host: host,
             port: port,
+            color: color,
             progressState: atConnecting,
             failedConn: false,
-            conn: new Connection(host, port, name, this.onWebSockFailure.bind(this), this.onWebSockOpen.bind(this))
+            conn: new Connection(host, port, name, color, this.onWebSockFailure.bind(this), this.onWebSockOpen.bind(this))
         });
     }
 

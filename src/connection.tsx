@@ -4,7 +4,8 @@ interface ConnectionData {
     name: string,
     host: string,
     port: number,
-    token: string
+    token: string,
+    color: string
 }
 
 function connectionDataFromJson(o: object): ConnectionData {
@@ -12,7 +13,8 @@ function connectionDataFromJson(o: object): ConnectionData {
         name: JsonParser.requireString(o, 'name'),
         host: JsonParser.requireString(o, 'host'),
         port: JsonParser.requireNumber(o, 'port'),
-        token: JsonParser.requireString(o, 'token')
+        token: JsonParser.requireString(o, 'token'),
+        color: JsonParser.requireString(o, 'color')
     }
 }
 
@@ -32,6 +34,7 @@ export class Connection {
     private name: string;
     private host: string;
     private port: number;
+    private color: string;
 
     private onWebSockFailure: (ev: Event) => void;
     private onWebSockOpen: (ev: Event) => void;
@@ -40,10 +43,11 @@ export class Connection {
 
     private connectedOnce: boolean;
 
-    constructor(host: string, port: number, name: string, onWebSockFailure: (ev: Event) => void, onWebSockOpen: (ev: Event) => void, token?: string) {
+    constructor(host: string, port: number, name: string, color: string, onWebSockFailure: (ev: Event) => void, onWebSockOpen: (ev: Event) => void, token?: string) {
 
         this.host = encodeURIComponent(host);
         this.name = encodeURIComponent(name);
+        this.color = encodeURIComponent(color);
         if (port.toString() == 'NaN') {
             throw Error("yeet the port"); 
         }
@@ -79,7 +83,7 @@ export class Connection {
         const result = sessionStorage.getItem('connection');
         if (result) {
             const dat = connectionDataFromJson(JSON.parse(result)); // json parsing shouldn't fail
-            return new Connection(dat.host, dat.port, dat.name, onWebSockFailure, onWebSockOpen, dat.token);
+            return new Connection(dat.host, dat.port, dat.name, dat.color, onWebSockFailure, onWebSockOpen, dat.token);
         }
         else {
             return null;
@@ -92,10 +96,10 @@ export class Connection {
 
     private getUrl() {
         if (this.token != null) {
-            return `ws://${this.host}:${this.port}/${this.name}/${this.token}`
+            return `ws://${this.host}:${this.port}/${this.name}/${this.token}/${this.color}`
         }
         else {
-            return `ws://${this.host}:${this.port}/${this.name}`
+            return `ws://${this.host}:${this.port}/${this.name}/${this.color}`
         }    
     }
 
@@ -163,7 +167,8 @@ export class Connection {
                             token: this.token,
                             host: this.host,
                             port: this.port,
-                            name: this.name
+                            name: this.name,
+                            color: this.color
                         }
 
                         sessionStorage.setItem('connection', JSON.stringify(data));

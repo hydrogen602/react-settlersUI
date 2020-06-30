@@ -4,11 +4,11 @@ interface IState {
     name: string,
     host: string,
     port: string,
-    callback: (name: string, host: string, port: number) => void
+    color: string,
 }
 
 interface IProp {
-    callback: (name: string, host: string, port: number) => void
+    callback: (name: string, host: string, port: number, color: string) => void
 }
 
 export class LoginForm extends React.Component<IProp, IState> {
@@ -18,7 +18,7 @@ export class LoginForm extends React.Component<IProp, IState> {
             name: '',
             host: '',
             port: '',
-            callback: props.callback
+            color: 'blue'
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -39,9 +39,9 @@ export class LoginForm extends React.Component<IProp, IState> {
 
     handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         const port = parseInt(this.state.port);
-        if (this.state.name != '' && this.state.host != '' && port.toString() != "NaN" && port > 0) {
+        if (this.state.name != '' && this.state.host != '' && port.toString() != "NaN" && port > 0 && this.state.color != '') {
             console.log("yeet", this.state);
-            this.state.callback(this.state.name, this.state.host, port);
+            this.props.callback(this.state.name, this.state.host, port, this.state.color);
         }
 
         event.preventDefault();
