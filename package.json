@@ -1,10 +1,14 @@
 {
+  "homepage": "http://jonathanrotter.com/react-settlersUI",
   "name": "react-settlersUI",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "build": "npx webpack"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +17,7 @@
     "@types/react": "^16.9.38",
     "@types/react-dom": "^16.9.8",
     "css-loader": "^3.6.0",
+    "gh-pages": "^3.1.0",
     "source-map-loader": "^1.0.0",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.5",
