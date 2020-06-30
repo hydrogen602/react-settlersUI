@@ -7,10 +7,10 @@ import { StatusBar, PlayerList } from "./gameOverlays/statusBar";
 import { Player } from "./canvasCode/mechanics/Player";
 import { Turn } from "./canvasCode/mechanics/Turn";
 import { Popup } from "./gameOverlays/popup";
-import { Hex } from "./canvasCode/graphics/Hex";
-import { RelPoint, AbsPoint, HexPoint } from "./canvasCode/graphics/Point";
+import { RelPoint, AbsPoint, HexPoint, Hex } from "./canvasCode/graphics/Point";
 import { Inventory } from "./canvasCode/mechanics/Inventory";
 import { InventoryDisplay } from "./gameOverlays/inventoryDisplay";
+import { Settlement } from "./canvasCode/map/Settlement";
 
 interface IProps {
     conn: Connection
@@ -24,6 +24,9 @@ interface IState {
     playerList: Array<string>,
     currentTurn: Turn | null,
     inventory: Inventory | null,
+
+    selectedLinePurchased: number | null,
+    selectedPointPurchased: number | null,
 }
 
 export class Game extends React.Component<IProps, IState> {
@@ -39,7 +42,10 @@ export class Game extends React.Component<IProps, IState> {
             currError: null,
             playerList: [],
             currentTurn: null,
-            inventory: null
+            inventory: null,
+
+            selectedLinePurchased: null,
+            selectedPointPurchased: null,
         }
     }
 
@@ -111,62 +117,49 @@ export class Game extends React.Component<IProps, IState> {
         }
     }
 
-    mouseHoverHandler(e: React.MouseEvent) {
-        const p = new RelPoint(e.clientX, e.clientY);
-        const r = Hex.distanceFromNearestHexCorner(p);
-
-        if (r < Hex.getSideLength() / 4) {
-            // ???
-        }
-    }
-
     mouseHandler(e: React.MouseEvent) {
         const p = new RelPoint(e.clientX, e.clientY);
         const r = Hex.distanceFromNearestHexCorner(p);
 
-        if (r < Hex.getSideLength() / 4) {
-            // clicked on a corner
-            const h = p.toHexPoint();
-            console.log("new settlement");
-            this.props.conn.send({'type': 'action', 'content': 'placeSettlement', 'args': [h.toJsonSerializable()]})
-        }
-
-        // if (GameManager.instance.mayPlaceRobber) {
-        //     const tile = m.getAllowedRobberPlace(p.toAbsPoint());
-        //     if (tile != undefined) {
-        //     }
-        //     else {
-                
-        //     }
-        // }
-        // else if (GameManager.instance.mayPlaceSettlement) {            
+        if (this.state.selectedPointPurchased != null) {            
             
-        //     if (r < Hex.getSideLength() / 4) {
-        //         // clicked on a corner
-        //         const h = p.toHexPoint();
-        //         console.log("new settlement");
-        //     }
-        // }
-        // else if (GameManager.instance.mayPlaceCity) {
-        //     // strokeCity
-        //     if (r < Hex.getSideLength() / 3.5) {
-        //         const h = p.toHexPoint();
-
-        //         if (m.isAllowedCity(h)) {
-        //             m.addCity(h);
-        //         }
-        //         else {
-        //             // console.log("not allowed position");
-        //             GameManager.instance.printErr("Illegal Position");
-        //         }
-        //     }
-        // }
-        // else if (GameManager.instance.mayPlaceRoad) {
-        //     const hArr = p.toDualHexPoint();            
-        //     if (hArr.length == 2) { // hArr is empty if not over a line 
+            if (r < Hex.getSideLength() / 4) {
+                // clicked on a corner
+                const h = p.toHexPoint();
+                console.log("new settlement");
+                this.props.conn.send({'type': 'action', 'content': 'placeSettlement', 'args': [h.toJsonSerializable(), this.state.selectedPointPurchased]})
                 
-        //     }
-        // }
+                this.setState({
+                    selectedPointPurchased: null
+                });
+            }
+        }
+        else if (this.state.selectedLinePurchased != null) {
+            const hArr = p.toDualHexPoint();            
+            if (hArr.length == 2) { // hArr is empty if not over a line 
+                const [a, b] = hArr;
+                console.log("new road");
+                this.props.conn.send({'type': 'action', 'content': 'placeRoad', 'args': [a.toJsonSerializable(), b.toJsonSerializable(), this.state.selectedLinePurchased]})
+            
+                this.setState({
+                    selectedLinePurchased: null
+                });
+            }
+        }
+    }
+
+    private onClickPurchasedPoint(index: number, ev: React.MouseEvent) {
+        this.setState({
+            selectedLinePurchased: null,
+            selectedPointPurchased: index
+        })
+    }
+
+    private onClickPurchasedLine(index: number, ev: React.MouseEvent) {
+        this.setState({
+            selectedLinePurchased: index,
+            selectedPointPurchased: null
+        })
     }
 
     render() {
@@ -179,9 +172,19 @@ export class Game extends React.Component<IProps, IState> {
                     {(this.state.gameStarted) ? null : <button className="button" onClick={() => {this.props.conn.send({'debug': 'startGame'})}}>Start Game</button>}
                     {(this.state.currentTurn && this.state.currentTurn.currentPlayer.getName() == this.props.conn.getName()) ? <button className="button" onClick={() => {this.props.conn.send({'type': 'action', 'content': 'nextTurn'})}}>End Turn</button> : null}
                 </StatusBar>
-                <InventoryDisplay inv={this.state.inventory}/>
+
+                <InventoryDisplay
+                    inv={this.state.inventory}
+                    onClickPurchasedLine={this.onClickPurchasedLine.bind(this)}
+                    onClickPurchasedPoint={this.onClickPurchasedPoint.bind(this)}
+                />
+
                 <PlayerList names={this.state.playerList} currentPlayer={(this.state.currentTurn) ? this.state.currentTurn.currentPlayer.getName() : null}/>
-                <Canvas gm={this.state.gm} onClick={this.mouseHandler.bind(this)} onHover={this.mouseHoverHandler.bind(this)}/>
+                <Canvas
+                    gm={this.state.gm} onClick={this.mouseHandler.bind(this)}
+                    mayPlaceRoad={this.state.selectedLinePurchased != null}
+                    mayPlaceSettlement={this.state.selectedPointPurchased != null}
+                />
             </div>
         )
     }

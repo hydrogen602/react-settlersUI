@@ -36,8 +36,12 @@ export class GameMap {
         }
 
         tmp = JsonParser.requireArray(data, 'lines');
+        const roadsArr: Array<Road> = [];
+        for (const r of tmp) {
+            roadsArr.push(Road.fromJson(r));
+        }
 
-        return new GameMap(tilesArr, settlementsArr, []);
+        return new GameMap(tilesArr, settlementsArr, roadsArr);
     }
 
     getTiles() {

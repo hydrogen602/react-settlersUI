@@ -1,19 +1,21 @@
 import * as React from "react";
 import { GameMap } from "./canvasCode/map/GameMap";
-import { Hex } from "./canvasCode/graphics/Hex";
+import { RelPoint, Hex } from "./canvasCode/graphics/Point";
+import { Settlement } from "./canvasCode/map/Settlement";
+import { Road } from "./canvasCode/map/Road";
 
 interface IProps {
     gm: GameMap,
     onClick: (e: React.MouseEvent) => void,
-    onHover: (e: React.MouseEvent) => void
+    mayPlaceSettlement: boolean,
+    mayPlaceRoad: boolean,
 }
 
-// interface IState {
-//     x: number,
-//     y: number,
-// }
+interface IState {
+    highlightFunc: ((ctx: CanvasRenderingContext2D) => void) | null
+}
 
-export class Canvas extends React.Component<IProps, {}> {
+export class Canvas extends React.Component<IProps, IState> {
 
     private canvasRef: React.RefObject<HTMLCanvasElement>;
 
@@ -21,10 +23,9 @@ export class Canvas extends React.Component<IProps, {}> {
         super(props);
         this.canvasRef = React.createRef();
 
-        // this.state = {
-        //     x: 0,
-        //     y: 0
-        // }
+        this.state = {
+            highlightFunc: null
+        }
     }
 
     componentDidMount() {
@@ -55,6 +56,11 @@ export class Canvas extends React.Component<IProps, {}> {
 
         this.props.gm.draw(ctx);
 
+        if (this.state.highlightFunc) {
+            this.state.highlightFunc(ctx);
+        }
+        
+
         // ctx.beginPath();
         // ctx.arc(this.state.x, this.state.y, 10, 0, 6.28);
         // ctx.fill();
@@ -79,7 +85,7 @@ export class Canvas extends React.Component<IProps, {}> {
                 width={window.innerWidth}
                 height={window.innerHeight}
                 onClick={this.props.onClick}
-                onMouseMove={this.props.onHover}
+                onMouseMove={this.mouseHoverHandler.bind(this)} // this.mouseHoverHandler.bind(this)
             />
         )
     }
@@ -107,5 +113,58 @@ export class Canvas extends React.Component<IProps, {}> {
         ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     
         return canvas;
+    }
+
+    mouseHoverHandler(e: React.MouseEvent) {
+        const p = new RelPoint(e.clientX, e.clientY);
+        const r = Hex.distanceFromNearestHexCorner(p);
+
+        if (this.props.mayPlaceSettlement) {  
+            const h = p.toHexPoint();
+            const back = h.toRelPoint();          
+            
+            if (r < Hex.getSideLength() / 4) {
+                this.setState({
+                    highlightFunc: (ctx) => {
+                        Settlement.stroke(back, ctx);
+                    }
+                });
+            }
+            else {
+                if (this.state.highlightFunc) {
+                    // not yet null, reset to null
+                    this.setState({
+                        highlightFunc: null
+                    });
+                }
+            }
+        }
+        else if (this.props.mayPlaceRoad) {
+            const hArr = p.toDualHexPoint();            
+            if (hArr.length == 2) { // hArr is empty if not over a line
+                const [a, b] = hArr; 
+                this.setState({
+                    highlightFunc: (ctx) => {
+                        Road.stroke(a.toRelPoint(), b.toRelPoint(), ctx);
+                    }
+                });
+            }
+            else {
+                if (this.state.highlightFunc) {
+                    // not yet null, reset to null
+                    this.setState({
+                        highlightFunc: null
+                    });
+                }
+            }
+        }
+        else {
+            if (this.state.highlightFunc) {
+                // not yet null, reset to null
+                this.setState({
+                    highlightFunc: null
+                });
+            }
+        }
     }
 }

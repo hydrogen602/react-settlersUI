@@ -1,7 +1,6 @@
 import { Biome, Desert, getBiomeByName } from "./Biome";
 import { defined } from "../util";
-import { HexPoint, AbsPoint } from "../graphics/Point"
-import { Hex } from "../graphics/Hex"
+import { HexPoint, AbsPoint, Hex } from "../graphics/Point"
 import { JsonParserError, JsonParser } from "../../../jsonParser"
 // import { Settlement } from "./Settlement";
 // import { Config } from "../Config";

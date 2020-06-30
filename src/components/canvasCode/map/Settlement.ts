@@ -1,6 +1,5 @@
-import { HexPoint, RelPoint } from "../graphics/Point";
+import { HexPoint, RelPoint, Hex } from "../graphics/Point";
 import { defined } from "../util";
-import { Hex } from "../graphics/Hex";
 import { Player } from "../mechanics/Player";
 import { JsonParser, JsonParserError } from "../../../jsonParser";
 
