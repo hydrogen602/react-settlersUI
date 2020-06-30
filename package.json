@@ -7,8 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "build": "npx webpack"
+    "deploy": "gh-pages -d dist --dest dist",
+    "build": "npx webpack --mode=\"production\""
   },
   "keywords": [],
   "author": "",
