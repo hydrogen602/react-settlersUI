@@ -54,6 +54,39 @@ body {
     width: 60%;
 }
 
+.colorBoxSubBox {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.colorBoxSubBox button {
+    display: block !important;
+    margin: 0.3em !important;
+    width: 2em !important;
+    height: 2em !important;
+    border: 0px !important;
+    border-radius: 0.2em !important;
+}
+
+.colorBox h3 {
+    color: white;
+}
+
+.colorBox {
+    z-index: 2;
+    width: 90%;
+    max-height: 90%;
+    overflow: scroll;
+}
+
+.colorBoxCollection {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: stretch;
+}
+
 /* ================= Spinner ================= */
 
 /* from https://www.w3schools.com/howto/howto_css_loader.asp */

@@ -1,7 +1,7 @@
 import * as React from "react";
 
-const colors = {
-    red: [
+const colors: Map<string, Array<string>> = new Map([
+    ['red', [
         "lightsalmon",
         "salmon",
         "darksalmon",
@@ -11,16 +11,16 @@ const colors = {
         "firebrick",
         "red",
         "darkred"
-    ],
-    orange: [
+    ]],
+    ['orange', [
         "coral",
         "tomato",
         "orangered",
         "gold",
         "orange",
         "darkorange"
-    ],
-    yellow: [
+    ]],
+    ['yellow', [
         "lightyellow",
         "lemonchiffon",
         "lightgoldenrodyellow",
@@ -31,8 +31,8 @@ const colors = {
         "khaki",
         "darkkhaki",
         "yellow"
-    ],
-    green: [
+    ]],
+    ['green', [
         "lawngreen",
         "chartreuse",
         "limegreen",
@@ -52,8 +52,8 @@ const colors = {
         "olive",
         "darkolivegreen",
         "olivedrab"
-    ],
-    cyan: [
+    ]],
+    ['cyan', [
         "lightcyan",
         "cyan",
         "aqua",
@@ -67,8 +67,8 @@ const colors = {
         "cadetblue",
         "darkcyan",
         "teal"
-    ],
-    blue: [
+    ]],
+    ['blue', [
         "powderblue",
         "lightblue",
         "lightskyblue",
@@ -87,8 +87,8 @@ const colors = {
         "mediumslateblue",
         "slateblue",
         "darkslateblue"
-    ],
-    purple: [
+    ]],
+    ['purple', [
         "lavender",
         "thistle",
         "plum",
@@ -104,16 +104,16 @@ const colors = {
         "darkmagenta",
         "purple",
         "indigo"
-    ],
-    pink: [
+    ]],
+    ['pink', [
         "pink",
         "lightpink",
         "hotpink",
         "deeppink",
         "palevioletred",
         "mediumvioletred"
-    ],
-    white: [
+    ]],
+    ['white', [
         "white",
         "snow",
         "honeydew",
@@ -131,8 +131,8 @@ const colors = {
         "linen",
         "lavenderblush",
         "mistyrose"
-    ],
-    gray: [
+    ]],
+    ['gray', [
         "gainsboro",
         "lightgray",
         "silver",
@@ -143,8 +143,8 @@ const colors = {
         "slategray",
         "darkslategray",
         "black"
-    ],
-    brown: [
+    ]],
+    ['brown', [
         "cornsilk",
         "blanchedalmond",
         "bisque",
@@ -161,14 +161,36 @@ const colors = {
         "sienna",
         "brown",
         "maroon"
-    ]
+    ]]
+]);
+
+interface IProps {
+    onClick: (color: string, ev: React.MouseEvent) => void
 }
 
-export function ColorBox(props: {}) {
+export function ColorBox(props: IProps) {
+
+    const items: Array<JSX.Element> = [];
+
+    for (const [familyName, familyColors] of colors.entries()) {
+        const len = items.length;
+        items.push(
+        <div style={{display: 'block', width: '30%'}} key={len}>
+            <h3>{familyName}</h3>
+            <div className="colorBoxSubBox">
+                {familyColors.map((value, index) => {
+                    return <button key={index} onClick={(ev) => props.onClick(value, ev)} style={{backgroundColor: value}}></button>
+                })}
+            </div>
+        </div>
+        );
+    }
 
     return (
-        <div className="window colorBox">
-
+        <div className="window colorBox center">
+            <div className="colorBoxCollection">
+                {items}
+            </div>
         </div>
     );
 }
