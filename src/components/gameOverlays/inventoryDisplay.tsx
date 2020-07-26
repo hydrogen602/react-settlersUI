@@ -1,34 +1,21 @@
 import * as React from "react";
 import { Inventory } from "../canvasCode/mechanics/Inventory";
+import { PurchaseMenu } from "../purchaseMenu";
 
 interface IProps {
     inv: Inventory | null,
     onClickPurchasedPoint: (index: number, ev: React.MouseEvent) => void,
     onClickPurchasedLine: (index: number, ev: React.MouseEvent) => void,
+    sendMessage: (type: string, content: string, args?: Array<any>) => void,
+    hasGameStarted: boolean
 }
 
-// interface IState {
-//     selectedLinePurchased: number | null,
-//     selectedPointPurchased: number | null,
-// }
-
-// export class InventoryDisplay extends React.Component<IProps, IState> {
-
-//     constructor(props: IProps) {
-//         super(props);
-
-//         this.state = {
-//             selectedLinePurchased: null,
-//             selectedPointPurchased: null
-//         }
-//     }
-
-//     render() {
-
 export function InventoryDisplay(props: IProps) {
-    if (!props.inv) {
+    if (!props.inv || !props.hasGameStarted) {
         return <div className="window inventory">Inventory</div>
     }
+
+    const [isPurchaseMenuShown, setPurchaseMenuVisibility] = React.useState(false);
 
     const tmp: Array<string> = [];
 
@@ -43,7 +30,10 @@ export function InventoryDisplay(props: IProps) {
 
     return (
         <div>
-            <div className="window inventory">{tmp.join('; ')}</div>
+            <div className="window inventory">
+                <button onClick={() => setPurchaseMenuVisibility(true)} className="button">Purchase Menu</button>
+                <span>{tmp.join('; ')}</span>
+            </div>
             { anyPurchased ? <div className="window inventory2">
                 <h3>Purchased:</h3>
                 <div style={{display: 'flex', flexWrap: 'wrap', marginBottom: '0.5em'}}>
@@ -65,6 +55,11 @@ export function InventoryDisplay(props: IProps) {
                     })}
                 </div>
             </div> : null }
+
+            { isPurchaseMenuShown ? <PurchaseMenu 
+                cancelFunc={() => setPurchaseMenuVisibility(false)}
+                sendMessage={props.sendMessage}
+            /> : null}
         </div>
     );
 }

@@ -1,6 +1,6 @@
 
-export function JsonMessage(type: string, content: string, args: Array<any>) {
-    if (args.length > 0) {
+export function JsonMessage(type: string, content: string, args?: Array<any>) {
+    if (args && args.length > 0) {
         return { "type": type, "content": content, "args": args }
     }
     else {

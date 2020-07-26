@@ -10,7 +10,6 @@ import { Popup } from "./gameOverlays/popup";
 import { RelPoint, AbsPoint, HexPoint, Hex } from "./canvasCode/graphics/Point";
 import { Inventory } from "./canvasCode/mechanics/Inventory";
 import { InventoryDisplay } from "./gameOverlays/inventoryDisplay";
-import { Settlement } from "./canvasCode/map/Settlement";
 
 interface IProps {
     conn: Connection
@@ -184,6 +183,8 @@ export class Game extends React.Component<IProps, IState> {
                     inv={this.state.inventory}
                     onClickPurchasedLine={this.onClickPurchasedLine.bind(this)}
                     onClickPurchasedPoint={this.onClickPurchasedPoint.bind(this)}
+                    sendMessage={this.props.conn.sendMessage}
+                    hasGameStarted={this.state.gameStarted}
                 />
 
                 <PlayerList names={this.state.playerList} currentPlayer={(this.state.currentTurn) ? this.state.currentTurn.currentPlayer.getName() : null}/>

@@ -17,13 +17,30 @@ interface IProp {
 export class LoginForm extends React.Component<IProp, IState> {
     constructor(props: IProp) {
         super(props);
+
+        let name = '';
+        let host = '';
+        let port = '';
+        let color = '';
+
+        const oldData = localStorage.getItem('login');
+        if (oldData) {
+            const oldState = JSON.parse(oldData);
+            if (oldState['name']) { name = oldState['name']; }
+            if (oldState['host']) { host = oldState['host']; }
+            if (oldState['port']) { port = oldState['port']; }
+            if (oldState['color']) { color = oldState['color']; }
+
+        }
+
         this.state = {
-            name: '',
-            host: '',
-            port: '',
-            color: '',
+            name: name,
+            host: host,
+            port: port,
+            color: color,
             pickingColor: false
         }
+
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -52,6 +69,8 @@ export class LoginForm extends React.Component<IProp, IState> {
         const port = parseInt(this.state.port);
         if (this.state.name != '' && this.state.host != '' && port.toString() != "NaN" && port > 0 && this.state.color != '') {
             console.log("yeet", this.state);
+
+            localStorage.setItem('login', JSON.stringify(this.state))
 
             this.props.callback({
                 name: this.state.name,

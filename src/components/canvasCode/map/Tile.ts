@@ -69,7 +69,7 @@ export class Tile {
 
     activateIfDiceValueMatchesElseDeactivate(value: number) {
         assertInt(value);
-        if (value == this.diceValue && !this.isDisabledByRobber) { // no profits if the robber is around
+        if (value == this.diceValue && !this.isDisabledByRobber && this.landType != Desert) { // no profits if the robber is around
             this.active = true;
         }
         else {

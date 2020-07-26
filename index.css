@@ -87,6 +87,97 @@ body {
     align-content: stretch;
 }
 
+/* ================= Purchase Menu ================= */
+
+.purchaseMenu {
+    color: white;
+    z-index: 2;
+}
+
+.purchaseMenu table {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+.purchaseMenu td {
+    /*border: 1em solid transparent;*/
+    padding: 0.5em;
+}
+
+.purchaseMenu td:first-child {
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+}
+
+.purchaseMenu td:last-child {
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+}
+
+.purchaseMenu tr:hover {
+    background-color: #F39C12;
+    color: black;
+}
+
+.purchaseMenu h3 {
+    width: 100%;
+    text-align: center;
+}
+
+.purchaseMenu button {
+    margin: 1em auto;
+    padding: 0.5em;
+    min-width: 40%;
+}
+
+/* ================= Inventory ================= */
+
+.inventory button {
+    float: left;
+    padding: 0.5em;
+}
+
+.inventory {
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    
+    width: 80%;
+
+    text-align: center;
+
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+    color: white;
+}
+
+.inventory2 {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    position: relative;
+
+    display: block;
+    
+    float: right;
+
+    margin-top: 3em;
+
+    color: white;
+}
+
+.inventory2 i {
+    color: #F39C12;
+    font-size: 2.5em;
+}
+
+.inventory2 button {
+    border: 0px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
 /* ================= Spinner ================= */
 
 /* from https://www.w3schools.com/howto/howto_css_loader.asp */
@@ -181,46 +272,7 @@ body {
     font-size: 1em;
 }
 
-.inventory {
-    position: absolute;
-    left: 50%;
-    bottom: 0px;
-    transform: translateX(-50%);
-    margin: 0 auto;
-    
-    width: 80%;
 
-    text-align: center;
-
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-
-    color: white;
-}
-
-.inventory2 {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    position: relative;
-
-    display: block;
-    
-    float: right;
-
-    margin-top: 3em;
-
-    color: white;
-}
-
-.inventory2 i {
-    color: #F39C12;
-    font-size: 2.5em;
-}
-
-.inventory2 button {
-    border: 0px;
-    background-color: rgba(0, 0, 0, 0);
-}
 
 
 canvas {

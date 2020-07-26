@@ -44,6 +44,8 @@ export class Connection {
 
         this.jsonMessageHandler = (a: any) => { throw Error("jsonMessageHandler not set"); };
         this.ws = null;
+
+        this.sendMessage = this.sendMessage.bind(this);
         
         this.connect();
     }
@@ -178,7 +180,7 @@ export class Connection {
         this.jsonMessageHandler = f;
     }
 
-        /**
+    /**
      * The function handles the JSON.stringify
      * 
      * @param o An object to send.
@@ -193,7 +195,14 @@ export class Connection {
         }
     }
 
-    public sendMessage(type: string, content: string, args: Array<any>) {
+    /**
+     * For sending a message to the server
+     * 
+     * @param type
+     * @param content 
+     * @param args 
+     */
+    public sendMessage(type: string, content: string, args?: Array<any>) {
         this.send(JsonMessage(type, content, args));
     }
 
