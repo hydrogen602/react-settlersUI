@@ -12,12 +12,13 @@ export class Tile {
     private center: AbsPoint;
 
     private active: boolean = false; // whether this round's die roll matches this tile
-    private isDisabledByRobber: boolean = false;
+    private isDisabledByRobber: boolean;
 
-    constructor(location: HexPoint, landType: Biome, diceValue: number) {
+    constructor(location: HexPoint, landType: Biome, diceValue: number, isDisabledByRobber: boolean) {
         this.diceValue = diceValue;
         this.landType = landType;
         this.p = location;
+        this.isDisabledByRobber = isDisabledByRobber;
 
         this.center = Hex.getCenterOfHex(location.y, location.x); // flip on purpose
 
@@ -34,7 +35,9 @@ export class Tile {
         const location = HexPoint.fromJson(JsonParser.requireObject(data, 'location'));
         const biome = getBiomeByName(JsonParser.requireString(data, 'biome'));
 
-        return new Tile(location, biome, diceValue);
+        const isDisabledByRobber = JsonParser.requireBool(data, 'isDisabledByRobber');
+
+        return new Tile(location, biome, diceValue, isDisabledByRobber);
     }
 
     // getDiceValue() {
@@ -45,9 +48,9 @@ export class Tile {
     //     return this.landType;
     // }
 
-    // getPos() {
-    //     return this.p;
-    // }
+    getPos() {
+        return this.p;
+    }
 
     // // activate if die matches this tile. Also does production
     // activateIfDiceValueMatches(value: number, settlements: Array<Settlement>) {
@@ -79,10 +82,14 @@ export class Tile {
 
     highlightIfActive(ctx: CanvasRenderingContext2D) {
         if (this.active && !this.isDisabledByRobber) {
-            ctx.strokeStyle = "white";
-            ctx.lineWidth = 4;
-            Hex.strokeHex(this.p.y, this.p.x, ctx);
+            this.highlight(ctx);
         }
+    }
+
+    highlight(ctx: CanvasRenderingContext2D) {
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 4;
+        Hex.strokeHex(this.p.y, this.p.x, ctx);
     }
 
     // arriveRobber() {
@@ -134,7 +141,7 @@ export class Tile {
         const apo = Hex.getSideLength() / 3.5 + 2;
         const xStep = 0.5773502691896257 * apo; // Math.tan(Math.PI / 6) * apo;
 
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 5;
 
         ctx.beginPath();
@@ -144,6 +151,20 @@ export class Tile {
         ctx.lineTo(relCenter.x - xStep, relCenter.y + apo);
         ctx.lineTo(relCenter.x - 2 * xStep, relCenter.y);
         ctx.lineTo(relCenter.x - xStep, relCenter.y - apo);
+        ctx.closePath();
+
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(relCenter.x + xStep, relCenter.y - apo);
+        ctx.lineTo(relCenter.x - xStep, relCenter.y + apo);
+        ctx.closePath();
+
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineTo(relCenter.x - xStep, relCenter.y - apo);
+        ctx.lineTo(relCenter.x + xStep, relCenter.y + apo);
         ctx.closePath();
 
         ctx.stroke();

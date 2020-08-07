@@ -26,6 +26,8 @@ interface IState {
 
     selectedLinePurchased: number | null,
     selectedPointPurchased: number | null,
+
+    mayPlaceRobber: boolean
 }
 
 export class Game extends React.Component<IProps, IState> {
@@ -45,6 +47,8 @@ export class Game extends React.Component<IProps, IState> {
 
             selectedLinePurchased: null,
             selectedPointPurchased: null,
+
+            mayPlaceRobber: false,
         }
     }
 
@@ -125,6 +129,7 @@ export class Game extends React.Component<IProps, IState> {
     mouseHandler(e: React.MouseEvent) {
         const p = new RelPoint(e.clientX, e.clientY);
         const r = Hex.distanceFromNearestHexCorner(p);
+        const a = p.toAbsPoint();
 
         if (this.state.selectedPointPurchased != null) {            
             
@@ -132,7 +137,7 @@ export class Game extends React.Component<IProps, IState> {
                 // clicked on a corner
                 const h = p.toHexPoint();
                 console.log("new settlement");
-                this.props.conn.send({'type': 'action', 'content': 'placeSettlement', 'args': [h.toJsonSerializable(), this.state.selectedPointPurchased]})
+                this.props.conn.send({'type': 'action', 'content': 'placeSettlement', 'args': [h.toJsonSerializable(), this.state.selectedPointPurchased]});
                 
                 this.setState({
                     selectedPointPurchased: null
@@ -144,11 +149,30 @@ export class Game extends React.Component<IProps, IState> {
             if (hArr.length == 2) { // hArr is empty if not over a line 
                 const [a, b] = hArr;
                 console.log("new road");
-                this.props.conn.send({'type': 'action', 'content': 'placeRoad', 'args': [a.toJsonSerializable(), b.toJsonSerializable(), this.state.selectedLinePurchased]})
+                this.props.conn.send({'type': 'action', 'content': 'placeRoad', 'args': [a.toJsonSerializable(), b.toJsonSerializable(), this.state.selectedLinePurchased]});
             
                 this.setState({
                     selectedLinePurchased: null
                 });
+            }
+        }
+        else if (this.state.mayPlaceRobber) {
+            for (const ti of this.state.gm.getTiles()) {
+                if (ti.isInside(a)) {
+                    
+                    // robber movement time
+                    console.log("move robber");
+                    const hp = ti.getPos();
+
+                    this.props.conn.send({'type': 'action', 'content': 'placeRobber', 'args': [hp.toJsonSerializable()]});
+                
+                    this.setState({
+                        mayPlaceRobber: false
+                    });
+
+                    break;
+                }
+                
             }
         }
     }
