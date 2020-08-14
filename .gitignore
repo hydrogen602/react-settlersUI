@@ -4,5 +4,5 @@
 /info.log.2
 /node_modules
 **.log*
-Makefile
+
 data/
