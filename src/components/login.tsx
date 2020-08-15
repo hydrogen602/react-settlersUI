@@ -7,7 +7,9 @@ interface IState {
     host: string,
     port: string,
     color: string,
-    pickingColor: boolean;
+    pickingColor: boolean,
+
+    onAWS: boolean
 }
 
 interface IProp {
@@ -33,12 +35,15 @@ export class LoginForm extends React.Component<IProp, IState> {
 
         }
 
+        const onAWS = "https://game.jonathanrotter.com/" == document.URL
+
         this.state = {
             name: name,
-            host: host,
-            port: port,
+            host: (onAWS) ? "game.jonathanrotter.com" : host,
+            port: (onAWS) ? "5000" : port,
             color: color,
-            pickingColor: false
+            pickingColor: false,
+            onAWS: onAWS
         }
 
 
@@ -89,8 +94,8 @@ export class LoginForm extends React.Component<IProp, IState> {
             <div>
                 <form id="loginForm" className="center window" onSubmit={this.handleSubmit}>
                     <input required name="name" type="text" placeholder="Name" value={this.state.name} onChange={this.handleChange}></input>
-                    <input required name="host" type="text" placeholder="Hostname" value={this.state.host} onChange={this.handleChange}></input>
-                    <input required name="port" type="number" placeholder="Port" value={this.state.port} onChange={this.handleChange}></input>
+                    {(this.state.onAWS) ? null : <input required name="host" type="text" placeholder="Hostname" value={this.state.host} onChange={this.handleChange}></input>}
+                    {(this.state.onAWS) ? null : <input required name="port" type="number" placeholder="Port" value={this.state.port} onChange={this.handleChange}></input>}
                     
                     <input required readOnly name="color" type="string" placeholder="Color" value={this.state.color} onFocus={() => {this.setState({ pickingColor: true })}}></input>
 
